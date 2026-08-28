@@ -17,7 +17,7 @@ export const CoverPage: React.FC = () => {
         <img
           src={logoUrl}
           alt="Xile Beauty & Spa Logo"
-          className="w-auto h-[55%] max-h-60 min-h-24 mb-2 md:mb-4 brightness-0 invert opacity-90 drop-shadow-lg object-contain"
+          className="w-auto h-[60%] md:h-[65%] max-h-72 lg:max-h-96 min-h-28 mb-2 md:mb-4 brightness-0 invert opacity-90 drop-shadow-lg object-contain"
         />
         <h1 className="font-serif text-sm md:text-xl lg:text-2xl text-zen-cream mb-1 md:mb-2 uppercase tracking-[0.15em] md:tracking-[0.2em] drop-shadow-sm text-center">
           Menu Dịch Vụ

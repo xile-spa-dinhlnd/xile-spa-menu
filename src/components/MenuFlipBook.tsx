@@ -16,6 +16,7 @@ export const MenuFlipBook: React.FC = () => {
   const [isCoverCentered, setIsCoverCentered] = useState(true);
   const [isFlipping, setIsFlipping] = useState(false);
   const bookRef = useRef<any>(null);
+  const swipeDirectionRef = useRef<"prev" | "next" | null>(null);
 
   // Đồng bộ trạng thái căn giữa khi xoay màn hình (portrait/landscape)
   React.useEffect(() => {
@@ -45,23 +46,36 @@ export const MenuFlipBook: React.FC = () => {
     if (state === "read") {
       // Khi sách dừng hẳn, đồng bộ lại vị trí theo trang hiện tại (dùng ref để luôn lấy đúng giá trị mới nhất)
       setIsCoverCentered(!usePortrait && currentPageRef.current === 0);
-    } else if (
-      (state === "flipping" || state === "user_fold") &&
-      currentPageRef.current === 0
-    ) {
-      // Bắt đầu lật từ trang bìa -> Trượt ngay lập tức sang phải để nhường chỗ cho trang bên trái
-      setIsCoverCentered(false);
+    } else if (state === "flipping") {
+      // Kiểm tra nếu đang ở trang bìa/trang 1 và hướng vuốt là lật ngược (prev) -> đang đóng sách
+      if (currentPageRef.current <= 2 && swipeDirectionRef.current === "prev") {
+        setIsCoverCentered(!usePortrait); // Trượt về giữa ngay khi hoạt ảnh đóng sách bắt đầu
+      } else {
+        setIsCoverCentered(false);
+      }
+    } else if (state === "user_fold") {
+      if (currentPageRef.current === 0) {
+        // Bắt đầu kéo lật (drag) từ trang bìa -> Trượt ngay lập tức sang phải để nhường chỗ
+        // Đã cố tình bỏ qua "fold_corner" (hover) để tránh lỗi giật màn hình
+        setIsCoverCentered(false);
+      }
     }
   };
 
   const nextButtonClick = () => {
     if (bookRef.current && bookRef.current.pageFlip()) {
+      swipeDirectionRef.current = "next";
+      setIsCoverCentered(false);
       bookRef.current.pageFlip().flipNext();
     }
   };
 
   const prevButtonClick = () => {
     if (bookRef.current && bookRef.current.pageFlip()) {
+      swipeDirectionRef.current = "prev";
+      if (currentPageRef.current <= 2) {
+        setIsCoverCentered(!usePortrait); // Trượt về giữa ngay khi bấm nút đóng
+      }
       bookRef.current.pageFlip().flipPrev();
     }
   };
@@ -118,6 +132,16 @@ export const MenuFlipBook: React.FC = () => {
         <div
           className="relative"
           style={{ width: usePortrait ? width : width * 2, height }}
+          onPointerDown={(e) => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            // Nếu click/chạm vào nửa bên trái của sách -> Đang vuốt lật ngược
+            if (clickX < rect.width / 2) {
+              swipeDirectionRef.current = "prev";
+            } else {
+              swipeDirectionRef.current = "next";
+            }
+          }}
         >
           <FlipBook
             ref={bookRef}
