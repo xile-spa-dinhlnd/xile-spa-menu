@@ -72,111 +72,130 @@ export const MenuFlipBook: React.FC = () => {
     currentPage < menuData.length - (usePortrait ? 1 : 2) && !isFlipping;
 
   return (
-    <div
-      className="flex justify-center items-center w-full h-full p-4 transition-transform duration-700 ease-out relative"
-      style={{
-        transform: isCoverCentered ? "translateX(-25%)" : "translateX(0)",
-      }}
-    >
-      {/* Nút Prev */}
-      <button
-        onClick={prevButtonClick}
-        className={`fixed left-2 md:left-8 top-1/2 -translate-y-1/2 z-50 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-zen-charcoal/80 text-zen-gold border border-zen-gold/30 hover:bg-zen-gold/20 backdrop-blur-sm transition-all duration-300 shadow-lg hover:scale-110 ${
-          showPrev ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
+    <>
+      {/* UX Hint CỐ ĐỊNH Ở NGOÀI CÙNG (không bị trượt theo sách) */}
+      <div
+        className={`fixed z-50 flex flex-col items-center transition-all duration-500 ${
+          currentPage === 0 && !isFlipping
+            ? "opacity-80 animate-pulse"
+            : "opacity-0 pointer-events-none"
+        } bottom-2 md:bottom-4 left-1/2 -translate-x-1/2`}
       >
-        <LucideIcons.ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
-      </button>
-
-      {/* Nút Next */}
-      <button
-        onClick={nextButtonClick}
-        className={`fixed right-2 md:right-8 top-1/2 -translate-y-1/2 z-50 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-zen-charcoal/80 text-zen-gold border border-zen-gold/30 hover:bg-zen-gold/20 backdrop-blur-sm transition-all duration-300 shadow-lg hover:scale-110 ${
-          showNext ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
-      >
-        <LucideIcons.ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
-      </button>
+        <LucideIcons.Hand className="w-5 h-5 md:w-6 md:h-6 text-zen-gold mb-1 md:mb-2" />
+        <p className="font-sans text-[10px] md:text-xs text-zen-gold/80 tracking-widest uppercase drop-shadow-md text-center w-50">
+          Chạm hoặc vuốt bìa để mở sách
+        </p>
+      </div>
 
       <div
-        className="relative"
-        style={{ width: usePortrait ? width : width * 2, height }}
+        className="flex justify-center items-center w-full h-full p-4 transition-transform duration-700 ease-out relative"
+        style={{
+          transform: isCoverCentered
+            ? `translateX(-${usePortrait ? 0 : width / 2}px)`
+            : "translateX(0)",
+        }}
       >
-        <FlipBook
-          ref={bookRef}
-          onFlip={onPageChange}
-          onChangeState={onChangeState}
-          width={width}
-          height={height}
-          size="fixed"
-          minWidth={315}
-          maxWidth={1000}
-          minHeight={400}
-          maxHeight={1533}
-          maxShadowOpacity={0.5}
-          showCover={showCover}
-          mobileScrollSupport={true}
-          usePortrait={usePortrait}
-          className="book-shadow"
-          style={{ margin: "0 auto" }}
+        {/* Nút Prev */}
+        <button
+          onClick={prevButtonClick}
+          className={`fixed left-2 md:left-8 top-1/2 -translate-y-1/2 z-50 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-zen-charcoal/80 text-zen-gold border border-zen-gold/30 hover:bg-zen-gold/20 backdrop-blur-sm transition-all duration-300 shadow-lg hover:scale-110 ${
+            showPrev ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
         >
-          {menuData.map((page, index) => {
-            // Trang bìa
-            if (page.type === "cover") {
+          <LucideIcons.ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
+        </button>
+
+        {/* Nút Next */}
+        <button
+          onClick={nextButtonClick}
+          className={`fixed right-2 md:right-8 top-1/2 -translate-y-1/2 z-50 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-zen-charcoal/80 text-zen-gold border border-zen-gold/30 hover:bg-zen-gold/20 backdrop-blur-sm transition-all duration-300 shadow-lg hover:scale-110 ${
+            showNext ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
+        >
+          <LucideIcons.ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+        </button>
+
+        <div
+          className="relative"
+          style={{ width: usePortrait ? width : width * 2, height }}
+        >
+          <FlipBook
+            ref={bookRef}
+            onFlip={onPageChange}
+            onChangeState={onChangeState}
+            width={width}
+            height={height}
+            size="fixed"
+            minWidth={315}
+            maxWidth={1000}
+            minHeight={400}
+            maxHeight={1533}
+            maxShadowOpacity={0}
+            drawShadow={false}
+            showCover={showCover}
+            mobileScrollSupport={true}
+            usePortrait={usePortrait}
+            className="book-shadow"
+            style={{ margin: "0 auto" }}
+          >
+            {menuData.map((page, index) => {
+              // Trang bìa
+              if (page.type === "cover") {
+                return (
+                  <PageWrapper key={page.id} isCover={true}>
+                    <CoverPage />
+                  </PageWrapper>
+                );
+              }
+
+              // Trang bìa sau
+              if (page.type === "back-cover") {
+                return (
+                  <PageWrapper key={page.id} isCover={true}>
+                    <div className="w-full h-full bg-zen-charcoal flex flex-col items-center justify-center p-8">
+                      <p className="font-script text-3xl text-zen-gold">
+                        Hẹn gặp lại
+                      </p>
+                      <p className="font-sans text-xs mt-4 text-zen-stone uppercase">
+                        Xile Spa
+                      </p>
+                    </div>
+                  </PageWrapper>
+                );
+              }
+
+              // Các trang ruột
               return (
-                <PageWrapper key={page.id} isCover={true}>
-                  <CoverPage />
+                <PageWrapper key={page.id} number={index + 1}>
+                  {page.type === "service" && page.serviceItem ? (
+                    <ServicePage service={page.serviceItem} />
+                  ) : page.type === "intro" ? (
+                    <IntroPage />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-zen-cream">
+                      <p className="font-serif text-zen-charcoal/50 text-xl">
+                        {page.type === "category-cover" && page.category?.title}
+                        {page.type === "combo" && "Bảng giá Combo"}
+                      </p>
+                    </div>
+                  )}
                 </PageWrapper>
               );
-            }
+            })}
+          </FlipBook>
 
-            // Trang bìa sau
-            if (page.type === "back-cover") {
-              return (
-                <PageWrapper key={page.id} isCover={true}>
-                  <div className="w-full h-full bg-zen-charcoal flex flex-col items-center justify-center p-8">
-                    <p className="font-script text-3xl text-zen-gold">
-                      Hẹn gặp lại
-                    </p>
-                    <p className="font-sans text-xs mt-4 text-zen-stone uppercase">
-                      Xile Spa
-                    </p>
-                  </div>
-                </PageWrapper>
-              );
-            }
-
-            // Các trang ruột
-            return (
-              <PageWrapper key={page.id} number={index + 1}>
-                {page.type === "service" && page.serviceItem ? (
-                  <ServicePage service={page.serviceItem} />
-                ) : page.type === "intro" ? (
-                  <IntroPage />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-zen-cream">
-                    <p className="font-serif text-zen-charcoal/50 text-xl">
-                      {page.type === "category-cover" && page.category?.title}
-                      {page.type === "combo" && "Bảng giá Combo"}
-                    </p>
-                  </div>
-                )}
-              </PageWrapper>
-            );
-          })}
-        </FlipBook>
-
-        {/* Lớp overlay vô hình chặn click vào khoảng trống bên trái trang bìa */}
-        {currentPage === 0 && !usePortrait && (
-          <div
-            className="absolute top-0 left-0 w-1/2 h-full z-100 cursor-default"
-            onPointerDown={(e) => e.stopPropagation()}
-            onMouseDown={(e) => e.stopPropagation()}
-            onTouchStart={(e) => e.stopPropagation()}
-            onClick={(e) => e.stopPropagation()}
-          />
-        )}
+          {/* Lớp overlay vô hình chặn click vào khoảng trống bên trái trang bìa */}
+          {currentPage === 0 && !usePortrait && (
+            <div
+              className="absolute top-0 left-0 w-1/2 h-full z-100 cursor-default"
+              onPointerDown={(e) => e.stopPropagation()}
+              onMouseDown={(e) => e.stopPropagation()}
+              onTouchStart={(e) => e.stopPropagation()}
+              onClick={(e) => e.stopPropagation()}
+            />
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };

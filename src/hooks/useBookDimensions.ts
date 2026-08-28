@@ -20,8 +20,8 @@ export function useBookDimensions(): BookDimensions {
       const screenWidth = window.innerWidth;
       const screenHeight = window.innerHeight;
       
-      // Padding an toàn quanh quyển sách
-      const padding = screenWidth < 768 ? 20 : 60;
+      // Padding an toàn quanh quyển sách (Giảm xuống để sách to hơn)
+      const padding = screenWidth < 768 ? 16 : 32;
       const availableWidth = screenWidth - padding * 2;
       const availableHeight = screenHeight - padding * 2;
 
@@ -63,8 +63,8 @@ export function useBookDimensions(): BookDimensions {
         }
 
         // Đặt giới hạn max width để sách không quá to trên màn hình 4K
-        if (width > 800) {
-          width = 800;
+        if (width > 1200) {
+          width = 1200;
           height = width / ASPECT_RATIO;
         }
       }
