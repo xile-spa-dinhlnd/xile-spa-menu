@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 // @ts-ignore - react-pageflip không có types chính thức hoàn chỉnh
 import HTMLFlipBook from 'react-pageflip';
 import { useBookDimensions } from '../hooks/useBookDimensions';
@@ -10,13 +10,51 @@ import { menuData } from '../data/menuData';
 
 export const MenuFlipBook: React.FC = () => {
   const { width, height, usePortrait, showCover } = useBookDimensions();
+  const [currentPage, setCurrentPage] = useState(0);
+  const currentPageRef = React.useRef(0);
+  const [isCoverCentered, setIsCoverCentered] = useState(true);
+
+  // Đồng bộ trạng thái căn giữa khi xoay màn hình (portrait/landscape)
+  React.useEffect(() => {
+    if (currentPage === 0) {
+      setIsCoverCentered(!usePortrait);
+    } else {
+      setIsCoverCentered(false);
+    }
+  }, [usePortrait, currentPage]);
 
   // Ép kiểu để vượt qua lỗi thiếu required props từ type definition lỏng lẻo của thư viện
   const FlipBook = HTMLFlipBook as any;
 
+  // Xử lý sự kiện khi TRANG ĐÃ LẬT XONG
+  const onPageChange = (e: { data: number }) => {
+    setCurrentPage(e.data);
+    currentPageRef.current = e.data; // Cập nhật ref đồng bộ để tránh stale closure
+  };
+
+  // Xử lý sự kiện khi TRẠNG THÁI CUỐN SÁCH THAY ĐỔI (đang lật, đã dừng...)
+  const onChangeState = (e: { data: string }) => {
+    const state = e.data; // 'read', 'flipping', 'fold_corner', 'user_fold'
+    
+    if (state === 'read') {
+      // Khi sách dừng hẳn, đồng bộ lại vị trí theo trang hiện tại (dùng ref để luôn lấy đúng giá trị mới nhất)
+      setIsCoverCentered(!usePortrait && currentPageRef.current === 0);
+    } else if ((state === 'flipping' || state === 'user_fold') && currentPageRef.current === 0) {
+      // Bắt đầu lật từ trang bìa -> Trượt ngay lập tức sang phải để nhường chỗ cho trang bên trái
+      setIsCoverCentered(false);
+    }
+  };
+
   return (
-    <div className="flex justify-center items-center w-full h-full p-4">
+    <div 
+      className="flex justify-center items-center w-full h-full p-4 transition-transform duration-700 ease-out"
+      style={{
+        transform: isCoverCentered ? 'translateX(-25%)' : 'translateX(0)'
+      }}
+    >
       <FlipBook
+        onFlip={onPageChange}
+        onChangeState={onChangeState}
         width={width}
         height={height}
         size="fixed"
