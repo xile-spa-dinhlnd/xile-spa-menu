@@ -10,7 +10,7 @@ interface BookDimensions {
 export function useBookDimensions(): BookDimensions {
   const [dimensions, setDimensions] = useState<BookDimensions>({
     width: 700,
-    height: 990,
+    height: 495, // 700 / 1.414
     showCover: true,
     usePortrait: false,
   });
@@ -30,35 +30,42 @@ export function useBookDimensions(): BookDimensions {
       let usePortrait = false;
       let showCover = true;
 
+      // Tỷ lệ A4 ngang (Width > Height)
+      const ASPECT_RATIO = 1.414;
+
       if (screenWidth < 768) {
-        // Mobile: Chế độ 1 trang (Portrait)
+        // Mobile: Chế độ 1 trang
         usePortrait = true;
-        showCover = true; // Mobile lật từng trang, có hiện bìa
+        showCover = true; 
         
-        // Tính kích thước 1 trang sao cho vừa màn hình
         width = availableWidth;
-        // Giữ tỷ lệ A4 (1:1.414)
-        height = Math.min(width * 1.414, availableHeight);
+        height = width / ASPECT_RATIO;
         
-        // Nếu height vượt quá màn hình, tính lại width theo height
-        if (height === availableHeight) {
-          width = height / 1.414;
+        if (height > availableHeight) {
+          height = availableHeight;
+          width = height * ASPECT_RATIO;
         }
       } else {
         // Tablet/Desktop: Chế độ 2 trang (Landscape)
         usePortrait = false;
-        showCover = true; // Sách mở ra 2 bên, trang đầu là bìa
+        showCover = true; 
         
-        // Cần không gian cho 2 trang cạnh nhau
         const maxWidthForTwoPages = availableWidth;
         const maxHeight = availableHeight;
 
-        // Tính width 1 trang (bằng 1/2 tổng width), tăng max lên 700px để full màn hình PC
-        width = Math.min(700, maxWidthForTwoPages / 2);
-        height = Math.min(width * 1.414, maxHeight);
+        // Với sách ngang, chiều rộng tổng (2 trang) rất lớn, thường sẽ bị giới hạn bởi width màn hình trước
+        height = maxHeight;
+        width = height * ASPECT_RATIO;
 
-        if (height === maxHeight) {
-          width = height / 1.414;
+        if (width * 2 > maxWidthForTwoPages) {
+          width = maxWidthForTwoPages / 2;
+          height = width / ASPECT_RATIO;
+        }
+
+        // Đặt giới hạn max width để sách không quá to trên màn hình 4K
+        if (width > 800) {
+          width = 800;
+          height = width / ASPECT_RATIO;
         }
       }
 

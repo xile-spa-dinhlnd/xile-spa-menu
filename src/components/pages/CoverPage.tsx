@@ -1,4 +1,5 @@
 import React from 'react';
+import * as LucideIcons from 'lucide-react';
 
 export const CoverPage: React.FC = () => {
   return (
@@ -19,8 +20,16 @@ export const CoverPage: React.FC = () => {
           Menu Dịch Vụ
         </h1>
         <div className="w-16 h-px bg-zen-gold/50 my-6"></div>
-        <p className="font-sans text-sm md:text-base text-zen-stone uppercase tracking-widest">
+        <p className="font-sans text-sm md:text-base text-zen-stone uppercase tracking-widest text-center">
           Nơi bạn được là chính mình
+        </p>
+      </div>
+
+      {/* UX Hint */}
+      <div className="absolute bottom-10 z-20 flex flex-col items-center opacity-80 animate-pulse pointer-events-none">
+        <LucideIcons.Hand className="w-5 h-5 text-zen-gold mb-2" />
+        <p className="font-sans text-xs text-zen-gold/80 tracking-widest uppercase">
+          Chạm hoặc vuốt để lật trang
         </p>
       </div>
       
