@@ -272,27 +272,12 @@ export const CoverPage: React.FC = () => {
           alt="Xile Beauty & Spa Logo"
           className="w-auto object-contain mb-2 md:mb-4"
           style={{
-            height: "clamp(60px, 14vh, 140px)",
+            height: "clamp(120px, 24vh, 240px)", // Phóng to Logo lên tối đa
             filter:
               "brightness(0) sepia(1) hue-rotate(0deg) saturate(0.5) brightness(0.35)",
             opacity: 0.85,
           }}
         />
-
-        {/* Tên thương hiệu */}
-        <h1
-          className="font-display uppercase"
-          style={{
-            fontSize: "clamp(1.8rem, 5vw, 3.5rem)",
-            letterSpacing: "0.3em",
-            color: "#3D2B1F",
-            textShadow: "0 1px 4px rgba(100,60,20,0.2)",
-            lineHeight: 1,
-            marginBottom: "0.2em",
-          }}
-        >
-          XILE
-        </h1>
 
         {/* Divider trang trí với icon lá */}
         <div
