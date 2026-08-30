@@ -95,8 +95,8 @@ export const MenuFlipBook: React.FC = () => {
             : "opacity-0 pointer-events-none"
         } bottom-2 md:bottom-4 left-1/2 -translate-x-1/2`}
       >
-        <LucideIcons.Hand className="w-5 h-5 md:w-6 md:h-6 text-zen-gold mb-1 md:mb-2" />
-        <p className="font-sans text-[10px] md:text-xs text-zen-gold/80 tracking-widest uppercase drop-shadow-md text-center w-50">
+        <LucideIcons.Hand className="w-5 h-5 md:w-6 md:h-6 text-zen-cream mb-1 md:mb-2" />
+        <p className="font-sans text-[10px] md:text-xs text-zen-cream/80 tracking-widest uppercase drop-shadow-md text-center w-50">
           Chạm hoặc vuốt bìa để mở sách
         </p>
       </div>
@@ -112,7 +112,7 @@ export const MenuFlipBook: React.FC = () => {
         {/* Nút Prev */}
         <button
           onClick={prevButtonClick}
-          className={`fixed left-2 md:left-8 top-1/2 -translate-y-1/2 z-50 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-zen-charcoal/80 text-zen-gold border border-zen-gold/30 hover:bg-zen-gold/20 backdrop-blur-sm transition-all duration-300 shadow-lg hover:scale-110 ${
+          className={`fixed left-2 md:left-8 top-1/2 -translate-y-1/2 z-50 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-zen-charcoal/80 text-zen-gold border border-zen-gold/40 hover:bg-black/50 hover:text-zen-gold hover:border-zen-gold/60 hover:scale-110 backdrop-blur-sm transition-all duration-300 shadow-lg ${
             showPrev ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
         >
@@ -122,7 +122,7 @@ export const MenuFlipBook: React.FC = () => {
         {/* Nút Next */}
         <button
           onClick={nextButtonClick}
-          className={`fixed right-2 md:right-8 top-1/2 -translate-y-1/2 z-50 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-zen-charcoal/80 text-zen-gold border border-zen-gold/30 hover:bg-zen-gold/20 backdrop-blur-sm transition-all duration-300 shadow-lg hover:scale-110 ${
+          className={`fixed right-2 md:right-8 top-1/2 -translate-y-1/2 z-50 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-zen-charcoal/80 text-zen-gold border border-zen-gold/40 hover:bg-black/50 hover:text-zen-gold hover:border-zen-gold/60 hover:scale-110 backdrop-blur-sm transition-all duration-300 shadow-lg ${
             showNext ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
         >
@@ -131,7 +131,12 @@ export const MenuFlipBook: React.FC = () => {
 
         <div
           className="relative"
-          style={{ width: usePortrait ? width : width * 2, height }}
+          style={{
+            width: usePortrait ? width : width * 2,
+            height,
+            // Bóng đổ 3D sâu: như cuốn sách đặt trên bàn thật
+            filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.7)) drop-shadow(0 5px 15px rgba(0,0,0,0.5))',
+          }}
           onPointerDown={(e) => {
             const rect = e.currentTarget.getBoundingClientRect();
             const clickX = e.clientX - rect.left;
@@ -154,8 +159,8 @@ export const MenuFlipBook: React.FC = () => {
             maxWidth={1000}
             minHeight={400}
             maxHeight={1533}
-            maxShadowOpacity={0}
-            drawShadow={false}
+            maxShadowOpacity={0.35}
+            drawShadow={true}
             showCover={showCover}
             mobileScrollSupport={true}
             usePortrait={usePortrait}
@@ -176,13 +181,25 @@ export const MenuFlipBook: React.FC = () => {
               if (page.type === "back-cover") {
                 return (
                   <PageWrapper key={page.id} isCover={true}>
-                    <div className="w-full h-full bg-zen-charcoal flex flex-col items-center justify-center p-8">
-                      <p className="font-script text-3xl text-zen-gold">
-                        Hẹn gặp lại
-                      </p>
-                      <p className="font-sans text-xs mt-4 text-zen-stone uppercase">
-                        Xile Spa
-                      </p>
+                    <div
+                      className="w-full h-full flex flex-col items-center justify-center p-8 relative overflow-hidden text-zen-charcoal"
+                      style={{
+                        background:
+                          "linear-gradient(160deg, #D4B483 0%, #C8A46A 25%, #BF9855 50%, #C4A060 75%, #D0AC78 100%)",
+                      }}
+                    >
+                      {/* Vignette viền */}
+                      <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at center, transparent 60%, rgba(100,60,10,0.1) 100%)" }} />
+                      
+                      <div className="relative z-10 flex flex-col items-center">
+                        <p className="font-script text-4xl text-zen-brown opacity-90 drop-shadow-sm">
+                          Hẹn gặp lại
+                        </p>
+                        <div className="w-12 h-px bg-zen-brown/30 my-4"></div>
+                        <p className="font-sans text-xs tracking-widest text-zen-charcoal uppercase font-semibold">
+                          Xile Spa
+                        </p>
+                      </div>
                     </div>
                   </PageWrapper>
                 );
@@ -196,11 +213,20 @@ export const MenuFlipBook: React.FC = () => {
                   ) : page.type === "intro" ? (
                     <IntroPage />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-zen-cream">
-                      <p className="font-serif text-zen-charcoal/50 text-xl">
-                        {page.type === "category-cover" && page.category?.title}
-                        {page.type === "combo" && "Bảng giá Combo"}
-                      </p>
+                    <div 
+                      className="w-full h-full flex flex-col items-center justify-center relative overflow-hidden"
+                      style={{
+                        background:
+                          "linear-gradient(160deg, #D4B483 0%, #C8A46A 25%, #BF9855 50%, #C4A060 75%, #D0AC78 100%)",
+                      }}
+                    >
+                      <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 70% 50% at 50% 50%, rgba(255,245,220,0.35) 0%, transparent 65%)" }} />
+                      <div className="relative z-10 p-8 text-center border-y border-zen-brown/20 py-8 mx-8">
+                        <p className="font-serif text-zen-charcoal text-2xl md:text-3xl font-bold uppercase tracking-widest drop-shadow-sm opacity-90">
+                          {page.type === "category-cover" && page.category?.title}
+                          {page.type === "combo" && "Bảng giá Combo"}
+                        </p>
+                      </div>
                     </div>
                   )}
                 </PageWrapper>

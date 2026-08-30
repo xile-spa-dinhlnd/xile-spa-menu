@@ -64,7 +64,7 @@ html {
 body {
   margin: 0;
   font-family: var(--font-sans);
-  background-color: var(--color-bg-site);
+  background-color: #221508;
   color: var(--color-zen-charcoal);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -79,3 +79,33 @@ body {
   align-items: center;
   justify-content: center;
 }
+
+/* === Ripple / Sóng nước Animation === */
+@keyframes ripple {
+  0%   { transform: scale(0.1); opacity: 0; }
+  15%  { opacity: 0.6; }
+  100% { transform: scale(2.8); opacity: 0; }
+}
+
+.ripple-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px solid rgba(140, 100, 50, 0.5);
+  animation: ripple 3s ease-out infinite;
+  pointer-events: none;
+  opacity: 0; /* Ẩn vòng tròn trước khi animation delay bắt đầu chạy */
+}
+.ripple-ring:nth-child(2) { animation-delay: 0.75s; }
+.ripple-ring:nth-child(3) { animation-delay: 1.5s; }
+.ripple-ring:nth-child(4) { animation-delay: 2.25s; }
+
+/* === Leaf sway animation === */
+@keyframes leaf-sway {
+  0%, 100% { transform: rotate(-3deg) translateY(0px); }
+  50%       { transform: rotate(3deg) translateY(-6px); }
+}
+.leaf-sway { animation: leaf-sway 5s ease-in-out infinite; }
+
+/* Nối hữ trang trí kỹ thuật: ẩn scrollbar bên trong trang */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
