@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/xile-spa-menu/', // Cần thiết cho việc deploy lên Github Pages (tên repo)
   plugins: [
     react(),
     tailwindcss(),
