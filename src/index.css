@@ -54,15 +54,7 @@
    Book Realism & 3D Effects
    ============================================================ */
 
-/* Làm mềm góc của thư viện react-pageflip */
-.stf__wrapper {
-  border-radius: 6px !important;
-  overflow: hidden !important;
-}
-.stf__block {
-  border-radius: 6px !important;
-  overflow: hidden !important;
-}
+/* Đã gỡ bỏ border-radius và overflow: hidden của react-pageflip để hiệu ứng lật mượt mà như ban đầu */
 
 /* ============================================================
    Base Styles

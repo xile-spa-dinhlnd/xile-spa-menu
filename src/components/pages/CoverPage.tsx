@@ -9,11 +9,21 @@ export const CoverPage: React.FC = () => {
           "linear-gradient(170deg, #E6D0A7 0%, #D4B483 35%, #B88E52 80%, #9C753F 100%)",
       }}
     >
-      {/* Rãnh gáy sách (Spine Crease) */}
-      <div className="absolute top-0 bottom-0 left-[2%] w-[4%] pointer-events-none z-20" style={{
-        background: "linear-gradient(to right, rgba(0,0,0,0.02) 0%, rgba(92,61,30,0.15) 30%, rgba(92,61,30,0.2) 50%, rgba(255,255,255,0.1) 70%, transparent 100%)",
-        borderLeft: "1px solid rgba(0,0,0,0.05)"
+      {/* Rãnh gáy sách (Spine Crease) - Làm mờ nhạt đi rất nhiều so với bản cũ */}
+      <div className="absolute top-0 bottom-0 left-[1%] w-[3%] pointer-events-none z-20" style={{
+        background: "linear-gradient(to right, rgba(0,0,0,0.01) 0%, rgba(92,61,30,0.05) 30%, rgba(92,61,30,0.08) 50%, rgba(255,255,255,0.05) 70%, transparent 100%)",
+        borderLeft: "1px solid rgba(0,0,0,0.03)"
       }}></div>
+
+      {/* === Bóng đổ viền trái === */}
+      <div
+        className="absolute top-0 bottom-0 left-0 pointer-events-none z-30"
+        style={{
+          width: "30px",
+          background:
+            "linear-gradient(to right, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.02) 50%, transparent 100%)",
+        }}
+      />
 
       {/* === Lớp mờ sương (atmospheric haze) === */}
       <div
@@ -383,15 +393,7 @@ export const CoverPage: React.FC = () => {
         </div>
       </div>
 
-      {/* === Bóng đổ gáy sách === */}
-      <div
-        className="absolute top-0 bottom-0 left-0 pointer-events-none z-30"
-        style={{
-          width: "40px",
-          background:
-            "linear-gradient(to right, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.05) 60%, transparent 100%)",
-        }}
-      />
+      {/* Bỏ Bóng đổ gáy sách theo yêu cầu */}
 
       {/* Vignette nhẹ viền ngoài */}
       <div
