@@ -116,3 +116,14 @@ body {
 /* Nối hữ trang trí kỹ thuật: ẩn scrollbar bên trong trang */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* =============================================================
+   Utilities: Background gradients
+   ============================================================= */
+.bg-paper-cover {
+  background: linear-gradient(170deg, #E6D0A7 0%, #D4B483 35%, #B88E52 80%, #9C753F 100%);
+}
+
+.bg-paper-inner {
+  background: linear-gradient(160deg, #D4B483 0%, #C8A46A 25%, #BF9855 50%, #C4A060 75%, #D0AC78 100%);
+}

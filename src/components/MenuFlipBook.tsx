@@ -7,7 +7,16 @@ import { PageWrapper } from "./pages/PageWrapper";
 import { CoverPage } from "./pages/CoverPage";
 import { ServicePage } from "./pages/ServicePage";
 import { IntroPage } from "./pages/IntroPage";
+import { BackCoverPage } from "./pages/BackCoverPage";
+import { CategoryCoverPage } from "./pages/CategoryCoverPage";
 import { menuData } from "../data/menuData";
+
+interface PageFlipAPI {
+  pageFlip: () => {
+    flipNext: () => void;
+    flipPrev: () => void;
+  };
+}
 
 export const MenuFlipBook: React.FC = () => {
   const { width, height, usePortrait, showCover } = useBookDimensions();
@@ -15,7 +24,7 @@ export const MenuFlipBook: React.FC = () => {
   const currentPageRef = useRef(0);
   const [isCoverCentered, setIsCoverCentered] = useState(true);
   const [isFlipping, setIsFlipping] = useState(false);
-  const bookRef = useRef<any>(null);
+  const bookRef = useRef<PageFlipAPI>(null);
   const swipeDirectionRef = useRef<"prev" | "next" | null>(null);
 
   // Đồng bộ trạng thái căn giữa khi xoay màn hình (portrait/landscape)
@@ -27,17 +36,14 @@ export const MenuFlipBook: React.FC = () => {
     }
   }, [usePortrait, currentPage]);
 
-  // Ép kiểu để vượt qua lỗi thiếu required props từ type definition lỏng lẻo của thư viện
-  const FlipBook = HTMLFlipBook as any;
-
   // Xử lý sự kiện khi TRANG ĐÃ LẬT XONG
-  const onPageChange = (e: { data: number }) => {
+  const onPageChange = React.useCallback((e: { data: number }) => {
     setCurrentPage(e.data);
     currentPageRef.current = e.data; // Cập nhật ref đồng bộ để tránh stale closure
-  };
+  }, []);
 
   // Xử lý sự kiện khi TRẠNG THÁI CUỐN SÁCH THAY ĐỔI (đang lật, đã dừng...)
-  const onChangeState = (e: { data: string }) => {
+  const onChangeState = React.useCallback((e: { data: string }) => {
     const state = e.data; // 'read', 'flipping', 'fold_corner', 'user_fold'
 
     // Cập nhật trạng thái lật để làm mờ nút điều hướng
@@ -56,21 +62,20 @@ export const MenuFlipBook: React.FC = () => {
     } else if (state === "user_fold") {
       if (currentPageRef.current === 0) {
         // Bắt đầu kéo lật (drag) từ trang bìa -> Trượt ngay lập tức sang phải để nhường chỗ
-        // Đã cố tình bỏ qua "fold_corner" (hover) để tránh lỗi giật màn hình
         setIsCoverCentered(false);
       }
     }
-  };
+  }, [usePortrait]);
 
-  const nextButtonClick = () => {
+  const nextButtonClick = React.useCallback(() => {
     if (bookRef.current && bookRef.current.pageFlip()) {
       swipeDirectionRef.current = "next";
       setIsCoverCentered(false);
       bookRef.current.pageFlip().flipNext();
     }
-  };
+  }, []);
 
-  const prevButtonClick = () => {
+  const prevButtonClick = React.useCallback(() => {
     if (bookRef.current && bookRef.current.pageFlip()) {
       swipeDirectionRef.current = "prev";
       if (currentPageRef.current <= 2) {
@@ -78,7 +83,7 @@ export const MenuFlipBook: React.FC = () => {
       }
       bookRef.current.pageFlip().flipPrev();
     }
-  };
+  }, [usePortrait]);
 
   // Xác định lúc nào cần hiện nút Next/Prev
   const showPrev = currentPage > 0 && !isFlipping;
@@ -148,7 +153,7 @@ export const MenuFlipBook: React.FC = () => {
             }
           }}
         >
-          <FlipBook
+          <HTMLFlipBook
             ref={bookRef}
             onFlip={onPageChange}
             onChangeState={onChangeState}
@@ -181,26 +186,7 @@ export const MenuFlipBook: React.FC = () => {
               if (page.type === "back-cover") {
                 return (
                   <PageWrapper key={page.id} isCover={true}>
-                    <div
-                      className="w-full h-full flex flex-col items-center justify-center p-8 relative overflow-hidden text-zen-charcoal"
-                      style={{
-                        background:
-                          "linear-gradient(160deg, #D4B483 0%, #C8A46A 25%, #BF9855 50%, #C4A060 75%, #D0AC78 100%)",
-                      }}
-                    >
-                      {/* Vignette viền */}
-                      <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at center, transparent 60%, rgba(100,60,10,0.1) 100%)" }} />
-                      
-                      <div className="relative z-10 flex flex-col items-center">
-                        <p className="font-script text-4xl text-zen-brown opacity-90 drop-shadow-sm">
-                          Hẹn gặp lại
-                        </p>
-                        <div className="w-12 h-px bg-zen-brown/30 my-4"></div>
-                        <p className="font-sans text-xs tracking-widest text-zen-charcoal uppercase font-semibold">
-                          Xile Spa
-                        </p>
-                      </div>
-                    </div>
+                    <BackCoverPage />
                   </PageWrapper>
                 );
               }
@@ -212,27 +198,15 @@ export const MenuFlipBook: React.FC = () => {
                     <ServicePage service={page.serviceItem} />
                   ) : page.type === "intro" ? (
                     <IntroPage />
-                  ) : (
-                    <div 
-                      className="w-full h-full flex flex-col items-center justify-center relative overflow-hidden"
-                      style={{
-                        background:
-                          "linear-gradient(160deg, #D4B483 0%, #C8A46A 25%, #BF9855 50%, #C4A060 75%, #D0AC78 100%)",
-                      }}
-                    >
-                      <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 70% 50% at 50% 50%, rgba(255,245,220,0.35) 0%, transparent 65%)" }} />
-                      <div className="relative z-10 p-8 text-center border-y border-zen-brown/20 py-8 mx-8">
-                        <p className="font-serif text-zen-charcoal text-2xl md:text-3xl font-bold uppercase tracking-widest drop-shadow-sm opacity-90">
-                          {page.type === "category-cover" && page.category?.title}
-                          {page.type === "combo" && "Bảng giá Combo"}
-                        </p>
-                      </div>
-                    </div>
-                  )}
+                  ) : page.type === "category-cover" && page.category ? (
+                    <CategoryCoverPage title={page.category.title} />
+                  ) : page.type === "combo" ? (
+                    <CategoryCoverPage title="Bảng giá Combo" />
+                  ) : null}
                 </PageWrapper>
               );
             })}
-          </FlipBook>
+          </HTMLFlipBook>
 
           {/* Lớp overlay vô hình chặn click vào khoảng trống bên trái trang bìa */}
           {currentPage === 0 && !usePortrait && (

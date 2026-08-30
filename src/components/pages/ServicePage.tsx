@@ -9,11 +9,7 @@ interface ServicePageProps {
 export const ServicePage: React.FC<ServicePageProps> = ({ service }) => {
   return (
     <div
-      className="w-full h-full text-zen-charcoal flex flex-col p-8 md:p-10 relative overflow-hidden"
-      style={{
-        background:
-          "linear-gradient(160deg, #D4B483 0%, #C8A46A 25%, #BF9855 50%, #C4A060 75%, #D0AC78 100%)",
-      }}
+      className="w-full h-full text-zen-charcoal flex flex-col p-8 md:p-10 relative overflow-hidden bg-paper-inner"
     >
       {/* Background Effect: Haze sáng ở giữa trên */}
       <div 

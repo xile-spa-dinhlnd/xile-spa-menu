@@ -3,11 +3,7 @@ import React from 'react';
 export const IntroPage: React.FC = () => {
   return (
     <div
-      className="w-full h-full text-zen-charcoal flex flex-col items-center justify-center p-8 md:p-12 text-center relative overflow-hidden"
-      style={{
-        background:
-          "linear-gradient(160deg, #D4B483 0%, #C8A46A 25%, #BF9855 50%, #C4A060 75%, #D0AC78 100%)",
-      }}
+      className="w-full h-full text-zen-charcoal flex flex-col items-center justify-center p-8 md:p-12 text-center relative overflow-hidden bg-paper-inner"
     >
       {/* === Lớp mờ sương (atmospheric haze) === */}
       <div

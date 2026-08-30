@@ -3,11 +3,7 @@ import React from "react";
 export const CoverPage: React.FC = () => {
   return (
     <div
-      className="w-full h-full text-zen-charcoal flex flex-col items-center justify-center text-center relative overflow-hidden"
-      style={{
-        background:
-          "linear-gradient(170deg, #E6D0A7 0%, #D4B483 35%, #B88E52 80%, #9C753F 100%)",
-      }}
+      className="w-full h-full text-zen-charcoal flex flex-col items-center justify-center text-center relative overflow-hidden bg-paper-cover"
     >
       {/* Rãnh gáy sách (Spine Crease) - Làm mờ nhạt đi rất nhiều so với bản cũ */}
       <div className="absolute top-0 bottom-0 left-[1%] w-[3%] pointer-events-none z-20" style={{
