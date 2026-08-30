@@ -133,7 +133,7 @@ export const menuData: BookPage[] = [
   },
   {
     id: 'page-9-skin-services',
-    type: 'service', // Reusing service type but maybe we need a list type later
+    type: 'category-cover', // Đổi sang category-cover để mượn tạm giao diện vàng
     category: { // Tạm thời dùng category để chứa list dịch vụ lẻ
        id: 'cat-skin-list',
        chapter: 2,

@@ -1,5 +1,5 @@
 import { forwardRef, type PropsWithChildren } from "react";
-import logoWatermark from "@/assets/xile_spa_logo.png";
+
 
 interface PageWrapperProps {
   number?: number;
@@ -31,17 +31,6 @@ export const PageWrapper = forwardRef<
         }}
       ></div>
 
-      {/* Hiệu ứng Watermark Logo chìm dưới nền (Chỉ áp dụng cho trang ruột) */}
-      {!isCover && (
-        <div className="absolute inset-0 pointer-events-none flex items-center justify-center z-0 overflow-hidden pt-0.5">
-          <img
-            src={logoWatermark}
-            alt=""
-            className="w-[120%] sm:w-full md:w-[90%] h-auto opacity-[0.07] mix-blend-color-burn transform translate-y-12"
-            style={{ minWidth: "300px", maxWidth: "600px" }}
-          />
-        </div>
-      )}
 
       {/* Đánh số trang (không hiển thị ở bìa) */}
       {!isCover && number !== undefined && (
