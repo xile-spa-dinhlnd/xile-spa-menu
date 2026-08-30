@@ -20,10 +20,10 @@ export function useBookDimensions(): BookDimensions {
       const screenWidth = window.innerWidth;
       const screenHeight = window.innerHeight;
       
-      // Padding an toàn quanh quyển sách (Giảm xuống để sách to hơn)
-      const padding = screenWidth < 768 ? 16 : 32;
+      // Padding an toàn quanh quyển sách
+      const padding = screenWidth < 768 ? 20 : 64; // Tăng padding desktop lên để sách có khoảng thở
       const availableWidth = screenWidth - padding * 2;
-      const availableHeight = screenHeight - padding * 2;
+      const availableHeight = screenHeight - padding * 2 - 80; // -80 để chừa chỗ cho hint text bên dưới
 
       let width = 450;
       let height = 650;

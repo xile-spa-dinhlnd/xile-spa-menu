@@ -1,5 +1,4 @@
 import React from "react";
-import logoUrl from "../../assets/xile_spa_logo.png";
 
 export const CoverPage: React.FC = () => {
   return (
@@ -7,9 +6,15 @@ export const CoverPage: React.FC = () => {
       className="w-full h-full text-zen-charcoal flex flex-col items-center justify-center text-center relative overflow-hidden"
       style={{
         background:
-          "linear-gradient(160deg, #D4B483 0%, #C8A46A 25%, #BF9855 50%, #C4A060 75%, #D0AC78 100%)",
+          "linear-gradient(170deg, #E6D0A7 0%, #D4B483 35%, #B88E52 80%, #9C753F 100%)",
       }}
     >
+      {/* Rãnh gáy sách (Spine Crease) */}
+      <div className="absolute top-0 bottom-0 left-[2%] w-[4%] pointer-events-none z-20" style={{
+        background: "linear-gradient(to right, rgba(0,0,0,0.02) 0%, rgba(92,61,30,0.15) 30%, rgba(92,61,30,0.2) 50%, rgba(255,255,255,0.1) 70%, transparent 100%)",
+        borderLeft: "1px solid rgba(0,0,0,0.05)"
+      }}></div>
+
       {/* === Lớp mờ sương (atmospheric haze) === */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -18,8 +23,6 @@ export const CoverPage: React.FC = () => {
             "radial-gradient(ellipse 70% 60% at 35% 40%, rgba(255,245,220,0.45) 0%, transparent 65%)",
         }}
       />
-
-
 
       {/* === Lá liễu góc trái (SVG vẽ tay) === */}
       <div
@@ -264,20 +267,21 @@ export const CoverPage: React.FC = () => {
       {/* === Nội dung chính === */}
       <div
         className="relative z-10 flex flex-col items-center"
-        style={{ marginTop: "-5%" }}
       >
-        {/* Logo (tối màu để hiển thị trên nền sáng) */}
-        <img
-          src={logoUrl}
-          alt="Xile Beauty & Spa Logo"
-          className="w-auto object-contain mb-2 md:mb-4"
+        {/* Tên thương hiệu */}
+        <h1
+          className="font-display uppercase"
           style={{
-            height: "clamp(120px, 24vh, 240px)", // Phóng to Logo lên tối đa
-            filter:
-              "brightness(0) sepia(1) hue-rotate(0deg) saturate(0.5) brightness(0.35)",
-            opacity: 0.85,
+            fontSize: "clamp(2.8rem, 7.5vw, 5.5rem)",
+            letterSpacing: "0.35em",
+            color: "#3D2B1F",
+            textShadow: "0 2px 8px rgba(100,60,20,0.25)",
+            lineHeight: 1,
+            marginBottom: "0.5em",
           }}
-        />
+        >
+          XILE
+        </h1>
 
         {/* Divider trang trí với icon lá */}
         <div
@@ -373,7 +377,9 @@ export const CoverPage: React.FC = () => {
           >
             <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.12-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z" />
           </svg>
-          <span className="font-sans tracking-wide">0909 722 408 — 0908 899 250</span>
+          <span className="font-sans tracking-wide">
+            0909 722 408 — 0908 899 250
+          </span>
         </div>
       </div>
 

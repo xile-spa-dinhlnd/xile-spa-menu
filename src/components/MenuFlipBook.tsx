@@ -134,8 +134,8 @@ export const MenuFlipBook: React.FC = () => {
           style={{
             width: usePortrait ? width : width * 2,
             height,
-            // Bóng đổ 3D sâu: như cuốn sách đặt trên bàn thật
-            filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.7)) drop-shadow(0 5px 15px rgba(0,0,0,0.5))',
+            filter:
+              "drop-shadow(0 25px 50px rgba(0,0,0,0.65)) drop-shadow(0 8px 20px rgba(0,0,0,0.45)) drop-shadow(0 2px 5px rgba(0,0,0,0.3))",
           }}
           onPointerDown={(e) => {
             const rect = e.currentTarget.getBoundingClientRect();
@@ -164,7 +164,7 @@ export const MenuFlipBook: React.FC = () => {
             showCover={showCover}
             mobileScrollSupport={true}
             usePortrait={usePortrait}
-            className="book-shadow"
+            className=""
             style={{ margin: "0 auto" }}
           >
             {menuData.map((page, index) => {

@@ -5,24 +5,20 @@ import { MenuFlipBook } from './components/MenuFlipBook'
 function App() {
   return (
     <div className="flex flex-col items-center justify-center min-h-dvh">
-      {/* Nền chính: nâu ấm trung bình — hài hòa với cả trang bìa beige lẫn trang ruột tối */}
+      {/* Nền chính: gradient tối đa lớp tạo chiều sâu */}
       <div
         className="fixed inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse at 50% 45%, #3A2510 0%, #2C1C0A 55%, #221508 100%)',
+          background: `
+            radial-gradient(ellipse 80% 60% at 50% 30%, rgba(72,45,15,0.9) 0%, rgba(35,20,5,0.95) 60%, #1a0e04 100%)
+          `,
         }}
       />
-      {/* Vân gỗ dọc rất tinh tế */}
+      {/* Spotlight từ trên chiếu xuống tạo hiệu ứng sân khấu */}
       <div
-        className="fixed inset-0 opacity-8 pointer-events-none"
+        className="fixed inset-0 pointer-events-none"
         style={{
-          backgroundImage: `repeating-linear-gradient(
-            90deg,
-            transparent,
-            transparent 3px,
-            rgba(80, 50, 15, 0.3) 3px,
-            rgba(80, 50, 15, 0.3) 4px
-          )`,
+          background: `radial-gradient(ellipse 50% 40% at 50% 0%, rgba(180,130,50,0.08) 0%, transparent 70%)`,
         }}
       />
 
