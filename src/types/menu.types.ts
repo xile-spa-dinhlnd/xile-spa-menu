@@ -26,8 +26,11 @@ export interface ServiceItem {
 export interface MenuCategory {
   id: string
   chapter: number                // Số chương: 1, 2, 3
-  title: string                  // VD: "MÁI TÓC"
+  title: string                  // VD: "MÁI TÓC" hoặc "GỘI DƯỠNG SINH"
   subtitle?: string              // VD: "Gội Đầu Dưỡng Sinh"
+  tagline?: string               // VD: "“Sạch tóc - Nhẹ đầu - Nuôi dưỡng từ gốc”"
+  philosophy?: string            // Đoạn văn triết lý chữa lành
+  theme?: 'hair' | 'skin' | 'body' | 'general' // Chủ đề để áp dụng ảnh nền/phong cách phù hợp
   coverQuote: string             // Câu trích dẫn ở trang cover danh mục
   items: ServiceItem[]
 }
@@ -58,6 +61,7 @@ export type PageType =
   | 'intro'           // Lời ngỏ
   | 'category-cover'  // Trang bìa của từng chương
   | 'service'         // Trang dịch vụ đơn
+  | 'service-list'    // Trang danh sách dịch vụ lẻ
   | 'combo'           // Bảng giá Combo
   | 'membership'      // Trang thẻ thành viên
   | 'back-cover'      // Bìa sau

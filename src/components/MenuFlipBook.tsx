@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 // @ts-ignore - react-pageflip không có types chính thức hoàn chỉnh
 import HTMLFlipBook from "react-pageflip";
-import * as LucideIcons from "lucide-react";
+import { Hand, ChevronLeft, ChevronRight } from "lucide-react";
 import { useBookDimensions } from "../hooks/useBookDimensions";
 import { PageWrapper } from "./pages/PageWrapper";
 import { CoverPage } from "./pages/CoverPage";
@@ -9,6 +9,7 @@ import { ServicePage } from "./pages/ServicePage";
 import { IntroPage } from "./pages/IntroPage";
 import { BackCoverPage } from "./pages/BackCoverPage";
 import { CategoryCoverPage } from "./pages/CategoryCoverPage";
+import { ServiceListPage } from "./pages/ServiceListPage";
 import { menuData } from "../data/menuData";
 
 interface PageFlipAPI {
@@ -100,7 +101,7 @@ export const MenuFlipBook: React.FC = () => {
             : "opacity-0 pointer-events-none"
         } bottom-2 md:bottom-4 left-1/2 -translate-x-1/2`}
       >
-        <LucideIcons.Hand className="w-5 h-5 md:w-6 md:h-6 text-zen-cream mb-1 md:mb-2" />
+        <Hand className="w-5 h-5 md:w-6 md:h-6 text-zen-cream mb-1 md:mb-2" />
         <p className="font-sans text-[10px] md:text-xs text-zen-cream/80 tracking-widest uppercase drop-shadow-md text-center w-50">
           Chạm hoặc vuốt bìa để mở sách
         </p>
@@ -117,21 +118,23 @@ export const MenuFlipBook: React.FC = () => {
         {/* Nút Prev */}
         <button
           onClick={prevButtonClick}
+          aria-label="Trang trước"
           className={`fixed left-2 md:left-8 top-1/2 -translate-y-1/2 z-50 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-zen-charcoal/80 text-zen-gold border border-zen-gold/40 hover:bg-black/50 hover:text-zen-gold hover:border-zen-gold/60 hover:scale-110 backdrop-blur-sm transition-all duration-300 shadow-lg ${
             showPrev ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
         >
-          <LucideIcons.ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
+          <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
         </button>
 
         {/* Nút Next */}
         <button
           onClick={nextButtonClick}
+          aria-label="Trang sau"
           className={`fixed right-2 md:right-8 top-1/2 -translate-y-1/2 z-50 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-zen-charcoal/80 text-zen-gold border border-zen-gold/40 hover:bg-black/50 hover:text-zen-gold hover:border-zen-gold/60 hover:scale-110 backdrop-blur-sm transition-all duration-300 shadow-lg ${
             showNext ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
         >
-          <LucideIcons.ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+          <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
         </button>
 
         <div
@@ -193,13 +196,19 @@ export const MenuFlipBook: React.FC = () => {
 
               // Các trang ruột
               return (
-                <PageWrapper key={page.id} number={index + 1}>
+                <PageWrapper
+                  key={page.id}
+                  number={index + 1}
+                  hideNumber={page.type === "intro" || page.type === "category-cover"}
+                >
                   {page.type === "service" && page.serviceItem ? (
                     <ServicePage service={page.serviceItem} />
                   ) : page.type === "intro" ? (
                     <IntroPage />
                   ) : page.type === "category-cover" && page.category ? (
-                    <CategoryCoverPage title={page.category.title} />
+                    <CategoryCoverPage category={page.category} />
+                  ) : page.type === "service-list" && page.category ? (
+                    <ServiceListPage category={page.category} />
                   ) : page.type === "combo" ? (
                     <CategoryCoverPage title="Bảng giá Combo" />
                   ) : null}

@@ -1,3 +1,4 @@
+import React from "react";
 import logoImage from "@/assets/xile_spa_logo.png";
 
 export const BackCoverPage: React.FC = () => {

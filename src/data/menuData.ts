@@ -15,9 +15,12 @@ export const menuData: BookPage[] = [
     category: {
       id: 'cat-hair',
       chapter: 1,
-      title: 'MÁI TÓC',
-      subtitle: 'Gội Đầu Dưỡng Sinh',
+      title: 'GỘI DƯỠNG SINH',
+      subtitle: 'CHƯƠNG 1: MÁI TÓC',
+      tagline: '“Sạch tóc - Nhẹ đầu - Nuôi dưỡng từ gốc”',
       coverQuote: '"Tóc là góc con người"',
+      theme: 'hair',
+      philosophy: 'Không chỉ là một buổi gội đầu.\nĐó là khoảng thời gian để cơ thể chậm lại, tâm trí được nghỉ ngơi,\ntừng giác quan được chữa lành bằng hương thảo dược, hơi ấm và\nđôi bàn tay giàu kinh nghiệm.',
       items: [] // Không dùng ở page này
     }
   },
@@ -127,27 +130,31 @@ export const menuData: BookPage[] = [
       chapter: 2,
       title: 'LÀN DA',
       subtitle: 'Làm Sạch & Chăm Sóc',
+      theme: 'skin',
       coverQuote: '"Làn da khỏe là làn da đẹp nhất"',
       items: []
     }
   },
   {
     id: 'page-9-skin-services',
-    type: 'category-cover', // Đổi sang category-cover để mượn tạm giao diện vàng
-    category: { // Tạm thời dùng category để chứa list dịch vụ lẻ
-       id: 'cat-skin-list',
-       chapter: 2,
-       title: 'LÀM SẠCH & CHĂM SÓC',
-       coverQuote: 'Gạt đi lớp bụi ngày dài, Giữ lại sự dịu dàng trên da',
-       items: [
-         { id: 'sk-1', name: 'Chăm sóc da cơ bản', price: 250000, includes: [] },
-         { id: 'sk-2', name: 'Chăm sóc da chuyên sâu', price: 550000, includes: [] },
-         { id: 'sk-3', name: 'Lấy nhân mụn lưng', price: 500000, includes: [] },
-         { id: 'sk-4', name: 'Detox CO2 đa tầng', price: 450000, includes: [] },
-         { id: 'sk-5', name: 'Detox mask cleaner', price: 400000, includes: [] },
-         { id: 'sk-6', name: 'Detox tảo lạnh', price: 450000, includes: [] },
-         { id: 'sk-7', name: 'Cấy HA cấp ẩm', price: 650000, includes: [] },
-       ]
+    type: 'service-list',
+    category: {
+      id: 'cat-skin-list',
+      chapter: 2,
+      title: 'LÀM SẠCH & CHĂM SÓC',
+      subtitle: 'CHƯƠNG 2: LÀN DA',
+      tagline: '“Gạt đi lớp bụi ngày dài, giữ lại sự dịu dàng trên da”',
+      coverQuote: 'Gạt đi lớp bụi ngày dài, Giữ lại sự dịu dàng trên da',
+      theme: 'skin',
+      items: [
+        { id: 'sk-1', name: 'Chăm sóc da cơ bản', price: 250000, includes: [] },
+        { id: 'sk-2', name: 'Chăm sóc da chuyên sâu', price: 550000, includes: [] },
+        { id: 'sk-3', name: 'Lấy nhân mụn lưng', price: 500000, includes: [] },
+        { id: 'sk-4', name: 'Detox CO2 đa tầng', price: 450000, includes: [] },
+        { id: 'sk-5', name: 'Detox mask cleaner', price: 400000, includes: [] },
+        { id: 'sk-6', name: 'Detox tảo lạnh', price: 450000, includes: [] },
+        { id: 'sk-7', name: 'Cấy HA cấp ẩm', price: 650000, includes: [] },
+      ]
     }
   },
   {

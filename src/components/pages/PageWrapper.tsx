@@ -4,6 +4,7 @@ import { forwardRef, type PropsWithChildren } from "react";
 interface PageWrapperProps {
   number?: number;
   isCover?: boolean;
+  hideNumber?: boolean;
 }
 
 /**
@@ -13,7 +14,7 @@ interface PageWrapperProps {
 export const PageWrapper = forwardRef<
   HTMLDivElement,
   PropsWithChildren<PageWrapperProps>
->(({ children, number, isCover }, ref) => {
+>(({ children, number, isCover, hideNumber }, ref) => {
   return (
     <div
       ref={ref}
@@ -32,9 +33,9 @@ export const PageWrapper = forwardRef<
       ></div>
 
 
-      {/* Đánh số trang (không hiển thị ở bìa) */}
-      {!isCover && number !== undefined && (
-        <div className="absolute bottom-4 left-0 right-0 text-center text-xs font-sans text-zen-stone/50 z-20">
+      {/* Đánh số trang (không hiển thị ở bìa hoặc khi có hideNumber) */}
+      {!isCover && !hideNumber && number !== undefined && (
+        <div className="absolute bottom-3 left-0 right-0 text-center text-xs font-sans text-zen-stone/60 z-20 pointer-events-none">
           {number}
         </div>
       )}

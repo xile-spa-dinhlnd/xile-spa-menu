@@ -1,6 +1,8 @@
 import React from 'react';
-import * as LucideIcons from 'lucide-react';
-import type { ServiceItem } from '../../types/menu.types';
+import { Leaf } from 'lucide-react';
+import type { ServiceItem } from '@/types/menu.types';
+import { formatPrice } from '@/lib/formatPrice';
+import { getServiceIcon } from '@/lib/icons';
 
 interface ServicePageProps {
   service: ServiceItem;
@@ -32,13 +34,13 @@ export const ServicePage: React.FC<ServicePageProps> = ({ service }) => {
           
           {service.tagline && (
             <p className="font-script text-xl md:text-2xl text-zen-brown italic mb-5">
-              "{service.tagline}"
+              “{service.tagline}”
             </p>
           )}
 
           <div className="flex justify-center items-center my-4">
             <span className="font-serif text-4xl md:text-5xl text-zen-charcoal font-bold italic drop-shadow-md">
-              {Math.floor(service.price / 1000)}k
+              {formatPrice(service.price, 'short')}
             </span>
           </div>
 
@@ -62,11 +64,7 @@ export const ServicePage: React.FC<ServicePageProps> = ({ service }) => {
         <div className="flex-1 overflow-y-auto pr-2 no-scrollbar">
           <div className="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-6 mt-4">
             {service.includes.map((item, index) => {
-              // Lấy icon động từ chuỗi, mặc định là Flower2 nếu không có
-              // @ts-ignore - LucideIcons type index access
-              const IconComponent = item.icon && LucideIcons[item.icon.charAt(0).toUpperCase() + item.icon.slice(1)] 
-                ? (LucideIcons as any)[item.icon.charAt(0).toUpperCase() + item.icon.slice(1)] 
-                : LucideIcons.Flower2;
+              const IconComponent = getServiceIcon(item.icon);
 
               return (
                 <div key={index} className="flex flex-col items-center text-center group">
@@ -85,7 +83,7 @@ export const ServicePage: React.FC<ServicePageProps> = ({ service }) => {
         {/* Note Footer */}
         {service.note && (
           <div className="mt-auto pt-5 pb-2 text-center border-t border-zen-brown/20 relative">
-            <LucideIcons.Leaf className="w-4 h-4 text-zen-brown/50 absolute -top-2 left-1/2 -translate-x-1/2 px-1" style={{ backgroundColor: "#BF9855" }} />
+            <Leaf className="w-4 h-4 text-zen-brown/50 absolute -top-2 left-1/2 -translate-x-1/2 px-1" style={{ backgroundColor: "#BF9855" }} />
             <p className="font-sans text-[11px] md:text-xs text-zen-brown italic">
               Lời nhắn nhỏ: {service.note}
             </p>
