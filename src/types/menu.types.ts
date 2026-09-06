@@ -61,18 +61,27 @@ export type PageType =
   | 'intro'           // Lời ngỏ
   | 'category-cover'  // Trang bìa của từng chương
   | 'service'         // Trang dịch vụ đơn
-  | 'service-list'    // Trang danh sách dịch vụ lẻ
+  | 'service-list'    // Trang bảng giá dịch vụ lẻ
   | 'combo'           // Bảng giá Combo
   | 'membership'      // Trang thẻ thành viên
-  | 'back-cover'      // Bìa sau
+  | 'thank-you'       // Lời cảm ơn kết thúc
+  | 'back-cover';     // Bìa sau
 
 /** Một trang trong quyển sách */
 export interface BookPage {
-  id: string
-  type: PageType
-  // Data payload — chỉ một trong các field sau được dùng tùy type
-  category?: MenuCategory
-  serviceItem?: ServiceItem
-  combos?: ComboItem[]
-  membershipTiers?: MembershipTier[]
+  id: string;
+  type: PageType;
+  title?: string;
+  side?: 'left' | 'right';
+  imageUrl?: string;
+  category?: MenuCategory;
+  serviceItem?: ServiceItem;
+  combos?: ComboItem[];
+  membershipTiers?: MembershipTier[];
+  srContent?: {
+    title: string;
+    subtitles?: string[];
+    paragraphs?: string[];
+    notes?: string;
+  };
 }

@@ -1,9 +1,14 @@
 import type { BookPage } from '../types/menu.types';
+import serviceHair69k from '@/assets/images/service-hair-69k.webp';
+import serviceHair179k from '@/assets/images/service-hair-179k.webp';
+import serviceHair289k from '@/assets/images/service-hair-289k.webp';
+import serviceHair450k from '@/assets/images/service-hair-450k.webp';
 
 export const hairChapterPages: BookPage[] = [
   {
     id: 'page-3-hair-category',
     type: 'category-cover',
+    side: 'right',
     category: {
       id: 'cat-hair',
       chapter: 1,
@@ -19,6 +24,8 @@ export const hairChapterPages: BookPage[] = [
   {
     id: 'page-4-service-69k',
     type: 'service',
+    side: 'left',
+    imageUrl: serviceHair69k,
     serviceItem: {
       id: 'srv-69k',
       name: 'AN NHIÊN',
@@ -38,6 +45,8 @@ export const hairChapterPages: BookPage[] = [
   {
     id: 'page-5-service-179k',
     type: 'service',
+    side: 'right',
+    imageUrl: serviceHair179k,
     serviceItem: {
       id: 'srv-179k',
       name: 'TĨNH DƯỠNG',
@@ -61,6 +70,8 @@ export const hairChapterPages: BookPage[] = [
   {
     id: 'page-6-service-289k',
     type: 'service',
+    side: 'left',
+    imageUrl: serviceHair289k,
     serviceItem: {
       id: 'srv-289k',
       name: 'PHỤC HỒI',
@@ -87,6 +98,8 @@ export const hairChapterPages: BookPage[] = [
   {
     id: 'page-7-service-450k',
     type: 'service',
+    side: 'right',
+    imageUrl: serviceHair450k,
     serviceItem: {
       id: 'srv-450k',
       name: 'SIGNATURE XILE',

@@ -16,6 +16,7 @@ export interface UseFlipBookReturn {
   currentPage: number;
   isFlipping: boolean;
   isCoverCentered: boolean;
+  isBackCoverCentered: boolean;
   showPrev: boolean;
   showNext: boolean;
   progressPercent: number;
@@ -38,8 +39,10 @@ export function useFlipBook(usePortrait: boolean): UseFlipBookReturn {
   const bookRef = useRef<PageFlipAPI | null>(null);
   const swipeDirectionRef = useRef<'prev' | 'next' | null>(null);
 
-  // Tính toán trực tiếp trạng thái căn giữa trang bìa (Landscape mode)
+  // Tính toán trực tiếp trạng thái căn giữa trang bìa trước và trang bìa sau (Landscape mode)
   const isCoverCentered = currentPage === 0 && !usePortrait && !isDraggingCover;
+  const isBackCoverCentered =
+    currentPage >= menuData.length - 1 && !usePortrait && !isDraggingCover;
 
   // Xử lý sự kiện khi TRANG ĐÃ LẬT XONG
   const onPageChange = useCallback((e: { data: number }) => {
@@ -108,8 +111,11 @@ export function useFlipBook(usePortrait: boolean): UseFlipBookReturn {
         }
         isFromButtonRef.current = false; // Reset sau khi nhận diện lượt lật này
       } else if (state === 'user_fold') {
-        if (currentPageRef.current === 0) {
-          // Bắt đầu kéo lật (drag) từ trang bìa -> Trượt ngay lập tức sang phải để nhường chỗ
+        if (
+          currentPageRef.current === 0 ||
+          currentPageRef.current >= menuData.length - 1
+        ) {
+          // Bắt đầu kéo lật (drag) từ trang bìa trước hoặc bìa sau -> Trượt ngay lập tức để nhường chỗ
           setIsDraggingCover(true);
         }
       }
@@ -124,7 +130,7 @@ export function useFlipBook(usePortrait: boolean): UseFlipBookReturn {
 
       // Tính trang đích tiếp theo dựa trên targetPageRef hiện tại để hỗ trợ bấm nhanh liên tiếp
       const current = targetPageRef.current;
-      if (current >= menuData.length - (usePortrait ? 1 : 2)) return;
+      if (current >= menuData.length - 1) return;
 
       const nextPage = usePortrait
         ? Math.min(menuData.length - 1, current + 1)
@@ -221,7 +227,7 @@ export function useFlipBook(usePortrait: boolean): UseFlipBookReturn {
 
   // Trạng thái hiển thị nút prev / next
   const showPrev = currentPage > 0;
-  const showNext = currentPage < menuData.length - (usePortrait ? 1 : 2);
+  const showNext = currentPage < menuData.length - 1;
 
   // Tính tỷ lệ % hoàn thành cuốn sách (0 - 100%)
   const totalPages = menuData.length;
@@ -247,6 +253,7 @@ export function useFlipBook(usePortrait: boolean): UseFlipBookReturn {
     currentPage,
     isFlipping,
     isCoverCentered,
+    isBackCoverCentered,
     showPrev,
     showNext,
     progressPercent,

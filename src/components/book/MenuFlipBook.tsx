@@ -12,6 +12,7 @@ import {
   CategoryCoverPage,
   ServicePage,
   ServiceListPage,
+  VisualPage,
   BackCoverPage,
 } from "../pages";
 import { menuData } from "../../data";
@@ -23,6 +24,7 @@ export const MenuFlipBook: React.FC = () => {
     currentPage,
     isFlipping,
     isCoverCentered,
+    isBackCoverCentered,
     showPrev,
     showNext,
     progressPercent,
@@ -56,8 +58,12 @@ export const MenuFlipBook: React.FC = () => {
       <div
         className="flex justify-center items-center w-full h-full p-4 transition-transform duration-700 ease-out relative"
         style={{
-          transform: isCoverCentered
-            ? `translateX(-${usePortrait ? 0 : width / 2}px)`
+          transform: usePortrait
+            ? "translateX(0)"
+            : isCoverCentered
+            ? `translateX(-${width / 2}px)`
+            : isBackCoverCentered
+            ? `translateX(${width / 2}px)`
             : "translateX(0)",
         }}
       >
@@ -91,7 +97,7 @@ export const MenuFlipBook: React.FC = () => {
             style={{ margin: "0 auto" }}
           >
             {menuData.map((page, index) => {
-              // Trang bìa
+              // Trang bìa trước
               if (page.type === "cover") {
                 return (
                   <PageWrapper key={page.id} isCover={true}>
@@ -109,23 +115,75 @@ export const MenuFlipBook: React.FC = () => {
                 );
               }
 
-              // Các trang ruột
+              // Trang Lời Ngỏ (Trang 2)
+              if (page.type === "intro") {
+                return (
+                  <PageWrapper key={page.id} number={index + 1} hideNumber={true}>
+                    <IntroPage />
+                  </PageWrapper>
+                );
+              }
+
+              // Trang Bìa Chương 1 Gội Đầu (Trang 3)
+              if (page.id === "page-3-hair-category" && page.category) {
+                return (
+                  <PageWrapper key={page.id} number={index + 1} hideNumber={true}>
+                    <CategoryCoverPage category={page.category} />
+                  </PageWrapper>
+                );
+              }
+
+              // Các trang hình ảnh chất lượng cao chuẩn theo tờ rơi Canva gốc (Trang 4 - 19)
+              if (page.imageUrl) {
+                const altText =
+                  page.title ||
+                  page.serviceItem?.name ||
+                  page.category?.title ||
+                  page.srContent?.title ||
+                  `Trang ${index + 1}`;
+
+                return (
+                  <PageWrapper key={page.id} number={index + 1} hideNumber={true}>
+                    <VisualPage
+                      imageSrc={page.imageUrl}
+                      alt={altText}
+                      side={page.side || (index % 2 === 1 ? "left" : "right")}
+                      srTitle={altText}
+                      srSubtitles={
+                        page.category?.subtitle
+                          ? [page.category.subtitle]
+                          : page.srContent?.subtitles
+                      }
+                      srParagraphs={
+                        page.category?.philosophy
+                          ? page.category.philosophy.split("\n")
+                          : page.serviceItem?.description
+                          ? [page.serviceItem.description]
+                          : page.srContent?.paragraphs
+                      }
+                      srList={
+                        page.serviceItem?.includes?.map((inc) => inc.label) ||
+                        page.category?.items?.map((it) => `${it.name}: ${it.price}đ`)
+                      }
+                      srNote={page.serviceItem?.note || page.srContent?.notes}
+                    />
+                  </PageWrapper>
+                );
+              }
+
+              // Fallback cho các loại trang khác nếu không có imageUrl
               return (
                 <PageWrapper
                   key={page.id}
                   number={index + 1}
-                  hideNumber={page.type === "intro" || page.type === "category-cover"}
+                  hideNumber={page.type === "category-cover"}
                 >
                   {page.type === "service" && page.serviceItem ? (
                     <ServicePage service={page.serviceItem} />
-                  ) : page.type === "intro" ? (
-                    <IntroPage />
                   ) : page.type === "category-cover" && page.category ? (
                     <CategoryCoverPage category={page.category} />
                   ) : page.type === "service-list" && page.category ? (
                     <ServiceListPage category={page.category} />
-                  ) : page.type === "combo" ? (
-                    <CategoryCoverPage title="Bảng giá Combo" />
                   ) : null}
                 </PageWrapper>
               );
@@ -136,6 +194,17 @@ export const MenuFlipBook: React.FC = () => {
           {currentPage === 0 && !usePortrait && (
             <div
               className="absolute top-0 left-0 w-1/2 h-full z-100 cursor-default"
+              onPointerDown={(e) => e.stopPropagation()}
+              onMouseDown={(e) => e.stopPropagation()}
+              onTouchStart={(e) => e.stopPropagation()}
+              onClick={(e) => e.stopPropagation()}
+            />
+          )}
+
+          {/* Lớp overlay vô hình chặn click vào khoảng trống bên phải trang bìa sau */}
+          {isBackCoverCentered && !usePortrait && (
+            <div
+              className="absolute top-0 right-0 w-1/2 h-full z-100 cursor-default"
               onPointerDown={(e) => e.stopPropagation()}
               onMouseDown={(e) => e.stopPropagation()}
               onTouchStart={(e) => e.stopPropagation()}
