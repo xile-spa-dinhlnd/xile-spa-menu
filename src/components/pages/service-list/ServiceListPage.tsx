@@ -1,7 +1,7 @@
 import React from 'react';
 import type { MenuCategory } from '@/types/menu.types';
 import { formatPrice } from '@/lib/formatPrice';
-import { CornerOrnament } from '../ui/CornerOrnament';
+import { CornerOrnament } from '@/components/ui';
 
 interface ServiceListPageProps {
   category: MenuCategory;

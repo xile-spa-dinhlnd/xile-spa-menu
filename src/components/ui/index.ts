@@ -1,0 +1,1 @@
+export { CornerOrnament } from './CornerOrnament';

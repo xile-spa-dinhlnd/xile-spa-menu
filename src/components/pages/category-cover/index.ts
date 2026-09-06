@@ -1,0 +1,1 @@
+export { CategoryCoverPage } from './CategoryCoverPage';

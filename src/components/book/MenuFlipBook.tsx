@@ -1,18 +1,20 @@
 import React from "react";
 // @ts-ignore - react-pageflip không có types chính thức hoàn chỉnh
 import HTMLFlipBook from "react-pageflip";
-import { Hand } from "lucide-react";
-import { useBookDimensions } from "../hooks/useBookDimensions";
-import { useFlipBook } from "../hooks/useFlipBook";
-import { FlipBookDock } from "./dock";
-import { PageWrapper } from "./pages/PageWrapper";
-import { CoverPage } from "./pages/CoverPage";
-import { ServicePage } from "./pages/ServicePage";
-import { IntroPage } from "./pages/IntroPage";
-import { BackCoverPage } from "./pages/BackCoverPage";
-import { CategoryCoverPage } from "./pages/CategoryCoverPage";
-import { ServiceListPage } from "./pages/ServiceListPage";
-import { menuData } from "../data";
+import { useBookDimensions } from "../../hooks/useBookDimensions";
+import { useFlipBook } from "../../hooks/useFlipBook";
+import { FlipBookDock } from "../dock";
+import { PageWrapper } from "./PageWrapper";
+import { BookHint } from "./BookHint";
+import {
+  CoverPage,
+  IntroPage,
+  CategoryCoverPage,
+  ServicePage,
+  ServiceListPage,
+  BackCoverPage,
+} from "../pages";
+import { menuData } from "../../data";
 
 export const MenuFlipBook: React.FC = () => {
   const { width, height, usePortrait, showCover } = useBookDimensions();
@@ -36,18 +38,7 @@ export const MenuFlipBook: React.FC = () => {
   return (
     <>
       {/* UX Hint khi ở trang bìa */}
-      <div
-        className={`fixed bottom-14 sm:bottom-16 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1.5 transition-all duration-500 pointer-events-none ${
-          currentPage === 0 && !isFlipping
-            ? "opacity-85 animate-pulse"
-            : "opacity-0"
-        }`}
-      >
-        <Hand className="w-3.5 h-3.5 text-zen-cream" />
-        <span className="font-sans text-[10px] sm:text-[11px] text-zen-cream/80 tracking-widest uppercase drop-shadow-md whitespace-nowrap">
-          Chạm bìa hoặc bấm nút để mở sách
-        </span>
-      </div>
+      <BookHint show={currentPage === 0 && !isFlipping} />
 
       {/* Thanh điều khiển nổi tinh tế ở đáy màn hình (Bottom Dock với Progress Bar) */}
       <FlipBookDock

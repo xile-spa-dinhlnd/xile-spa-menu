@@ -1,5 +1,5 @@
 import './index.css'
-import { MenuFlipBook } from './components/MenuFlipBook'
+import { MenuFlipBook } from './components/book'
 
 
 function App() {
