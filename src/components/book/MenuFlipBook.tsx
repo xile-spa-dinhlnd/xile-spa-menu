@@ -19,8 +19,14 @@ import {
 import { menuData } from "../../data";
 
 export const MenuFlipBook: React.FC = () => {
-  const { width, height, usePortrait, showCover, isPortraitOrientation, coverShift } =
-    useBookDimensions();
+  const {
+    width,
+    height,
+    usePortrait,
+    showCover,
+    isPortraitOrientation,
+    coverShift,
+  } = useBookDimensions();
   const {
     bookRef,
     currentPage,
@@ -46,7 +52,11 @@ export const MenuFlipBook: React.FC = () => {
     return () => {
       try {
         const api = currentRef?.pageFlip?.();
-        if (api && typeof (api as unknown as { destroy?: () => void }).destroy === "function") {
+        if (
+          api &&
+          typeof (api as unknown as { destroy?: () => void }).destroy ===
+            "function"
+        ) {
           (api as unknown as { destroy: () => void }).destroy();
         }
       } catch {
@@ -59,10 +69,10 @@ export const MenuFlipBook: React.FC = () => {
   const containerTransform = usePortrait
     ? "translateX(0)"
     : isCoverCentered
-    ? `translateX(-${coverShift}px)`
-    : isBackCoverCentered
-    ? `translateX(${coverShift}px)`
-    : "translateX(0)";
+      ? `translateX(-${coverShift}px)`
+      : isBackCoverCentered
+        ? `translateX(${coverShift}px)`
+        : "translateX(0)";
 
   // Memoize danh sách trang để giữ nguyên DOM reference khi MenuFlipBook re-render
   // Trong chế độ portrait (mobile), các trang bìa chuyển sang density "soft" để hiệu ứng cuộn trang mượt mà không chớp giật
@@ -128,8 +138,8 @@ export const MenuFlipBook: React.FC = () => {
                 page.category?.philosophy
                   ? page.category.philosophy.split("\n")
                   : page.serviceItem?.description
-                  ? [page.serviceItem.description]
-                  : page.srContent?.paragraphs
+                    ? [page.serviceItem.description]
+                    : page.srContent?.paragraphs
               }
               srList={
                 page.serviceItem?.includes?.map((inc) => inc.label) ||
@@ -187,16 +197,26 @@ export const MenuFlipBook: React.FC = () => {
         }`}
       >
         <div
-          className="relative transition-transform duration-700 ease-out"
+          className={`relative transition-transform duration-700 ease-out ${
+            currentPage > 0 ? "book-inner-active" : ""
+          }`}
           style={{
             width: usePortrait ? width : width * 2,
             height,
             transform: containerTransform,
-            filter:
-              "drop-shadow(0 25px 50px rgba(0,0,0,0.65)) drop-shadow(0 8px 20px rgba(0,0,0,0.45)) drop-shadow(0 2px 5px rgba(0,0,0,0.3))",
           }}
           onPointerDown={onBookPointerDown}
         >
+          {/* Lớp bóng đổ chiều sâu tăng tốc phần cứng (GPU-accelerated ambient shadow) */}
+          <div
+            className="absolute inset-0 pointer-events-none rounded-md"
+            style={{
+              boxShadow:
+                "0 25px 50px -12px rgba(0,0,0,0.7), 0 12px 24px -8px rgba(0,0,0,0.5), 0 4px 10px rgba(0,0,0,0.35)",
+              transform: "translateZ(0)",
+            }}
+          />
+
           <HTMLFlipBook
             key={`${usePortrait ? "portrait" : "landscape"}-${width}x${height}`}
             ref={bookRef}

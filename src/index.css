@@ -59,12 +59,32 @@
   position: relative;
   width: 100%;
   box-sizing: border-box;
+  transform: translateZ(0);
 }
 
 .stf__parent {
   position: relative;
   display: block;
   box-sizing: border-box;
+}
+
+/* Tối ưu hiệu năng phần cứng cho từng trang khi xoay và lật 3D */
+.stf__item {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  contain: layout paint;
+}
+
+/* Tạm dừng toàn bộ hoạt ảnh trang bìa khi đang xem các trang ruột bên trong để giải phóng 100% GPU */
+.book-inner-active .leaf-fall-1,
+.book-inner-active .leaf-fall-2,
+.book-inner-active .leaf-fall-3,
+.book-inner-active .leaf-fall-4,
+.book-inner-active .leaf-fall-5,
+.book-inner-active .living-ripple,
+.book-inner-active .sunbeam-glow {
+  animation-play-state: paused !important;
 }
 
 /* ============================================================
