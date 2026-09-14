@@ -32,7 +32,10 @@ function calculateDimensions(): BookDimensions {
   let width = 340;
   let height = 240;
   let usePortrait = false;
-  const showCover = true;
+  // Chỉ bật showCover trong chế độ 2 trang (Landscape).
+  // Khi ở màn hình dọc (Portrait), tất cả các trang đều là trang đơn độc lập,
+  // do đó tắt showCover để page-flip không gán density HARD gây giật hình khi lật bìa.
+  const showCover = !isPortraitOrientation;
 
   if (isPortraitOrientation) {
     // ============================================================

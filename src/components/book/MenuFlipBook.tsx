@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 // @ts-ignore - react-pageflip không có types chính thức hoàn chỉnh
 import HTMLFlipBook from "react-pageflip";
 import { useBookDimensions } from "../../hooks/useBookDimensions";
@@ -64,6 +64,102 @@ export const MenuFlipBook: React.FC = () => {
     ? `translateX(${coverShift}px)`
     : "translateX(0)";
 
+  // Memoize danh sách trang để giữ nguyên DOM reference khi MenuFlipBook re-render
+  // Trong chế độ portrait (mobile), các trang bìa chuyển sang density "soft" để hiệu ứng cuộn trang mượt mà không chớp giật
+  const renderedPages = useMemo(() => {
+    return menuData.map((page, index) => {
+      // Trang bìa trước
+      if (page.type === "cover") {
+        return (
+          <PageWrapper
+            key={page.id}
+            isCover={true}
+            density={usePortrait ? "soft" : "hard"}
+          >
+            <CoverPage />
+          </PageWrapper>
+        );
+      }
+
+      // Trang bìa sau
+      if (page.type === "back-cover") {
+        return (
+          <PageWrapper
+            key={page.id}
+            isCover={true}
+            density={usePortrait ? "soft" : "hard"}
+          >
+            <BackCoverPage />
+          </PageWrapper>
+        );
+      }
+
+      // Trang Lời Ngỏ (Trang 2)
+      if (page.type === "intro") {
+        return (
+          <PageWrapper key={page.id} number={index + 1} hideNumber={true}>
+            <IntroPage />
+          </PageWrapper>
+        );
+      }
+
+      // Các trang hình ảnh chất lượng cao chuẩn theo tờ rơi Canva gốc (Trang 3 - 19)
+      if (page.imageUrl) {
+        const altText =
+          page.title ||
+          page.serviceItem?.name ||
+          page.category?.title ||
+          page.srContent?.title ||
+          `Trang ${index + 1}`;
+
+        return (
+          <PageWrapper key={page.id} number={index + 1} hideNumber={true}>
+            <VisualPage
+              imageSrc={page.imageUrl}
+              alt={altText}
+              side={page.side || (index % 2 === 1 ? "left" : "right")}
+              srTitle={altText}
+              srSubtitles={
+                page.category?.subtitle
+                  ? [page.category.subtitle]
+                  : page.srContent?.subtitles
+              }
+              srParagraphs={
+                page.category?.philosophy
+                  ? page.category.philosophy.split("\n")
+                  : page.serviceItem?.description
+                  ? [page.serviceItem.description]
+                  : page.srContent?.paragraphs
+              }
+              srList={
+                page.serviceItem?.includes?.map((inc) => inc.label) ||
+                page.category?.items?.map((it) => `${it.name}: ${it.price}đ`)
+              }
+              srNote={page.serviceItem?.note || page.srContent?.notes}
+            />
+          </PageWrapper>
+        );
+      }
+
+      // Fallback cho các loại trang khác nếu không có imageUrl
+      return (
+        <PageWrapper
+          key={page.id}
+          number={index + 1}
+          hideNumber={page.type === "category-cover"}
+        >
+          {page.type === "service" && page.serviceItem ? (
+            <ServicePage service={page.serviceItem} />
+          ) : page.type === "category-cover" && page.category ? (
+            <CategoryCoverPage category={page.category} />
+          ) : page.type === "service-list" && page.category ? (
+            <ServiceListPage category={page.category} />
+          ) : null}
+        </PageWrapper>
+      );
+    });
+  }, [usePortrait]);
+
   return (
     <>
       {/* Thông báo gợi ý xoay ngang màn hình khi ở hướng dọc */}
@@ -121,89 +217,7 @@ export const MenuFlipBook: React.FC = () => {
             className=""
             style={{ margin: "0 auto" }}
           >
-            {menuData.map((page, index) => {
-              // Trang bìa trước
-              if (page.type === "cover") {
-                return (
-                  <PageWrapper key={page.id} isCover={true}>
-                    <CoverPage />
-                  </PageWrapper>
-                );
-              }
-
-              // Trang bìa sau
-              if (page.type === "back-cover") {
-                return (
-                  <PageWrapper key={page.id} isCover={true}>
-                    <BackCoverPage />
-                  </PageWrapper>
-                );
-              }
-
-              // Trang Lời Ngỏ (Trang 2)
-              if (page.type === "intro") {
-                return (
-                  <PageWrapper key={page.id} number={index + 1} hideNumber={true}>
-                    <IntroPage />
-                  </PageWrapper>
-                );
-              }
-
-              // Các trang hình ảnh chất lượng cao chuẩn theo tờ rơi Canva gốc (Trang 3 - 19)
-              if (page.imageUrl) {
-                const altText =
-                  page.title ||
-                  page.serviceItem?.name ||
-                  page.category?.title ||
-                  page.srContent?.title ||
-                  `Trang ${index + 1}`;
-
-                return (
-                  <PageWrapper key={page.id} number={index + 1} hideNumber={true}>
-                    <VisualPage
-                      imageSrc={page.imageUrl}
-                      alt={altText}
-                      side={page.side || (index % 2 === 1 ? "left" : "right")}
-                      srTitle={altText}
-                      srSubtitles={
-                        page.category?.subtitle
-                          ? [page.category.subtitle]
-                          : page.srContent?.subtitles
-                      }
-                      srParagraphs={
-                        page.category?.philosophy
-                          ? page.category.philosophy.split("\n")
-                          : page.serviceItem?.description
-                          ? [page.serviceItem.description]
-                          : page.srContent?.paragraphs
-                      }
-                      srList={
-                        page.serviceItem?.includes?.map((inc) => inc.label) ||
-                        page.category?.items?.map((it) => `${it.name}: ${it.price}đ`)
-                      }
-                      srNote={page.serviceItem?.note || page.srContent?.notes}
-                    />
-                  </PageWrapper>
-                );
-              }
-
-              // Fallback cho các loại trang khác nếu không có imageUrl
-              return (
-                <PageWrapper
-                  key={page.id}
-                  number={index + 1}
-                  hideNumber={page.type === "category-cover"}
-                >
-                  {page.type === "service" && page.serviceItem ? (
-                    <ServicePage service={page.serviceItem} />
-                  ) : page.type === "category-cover" && page.category ? (
-                    <CategoryCoverPage category={page.category} />
-                  ) : page.type === "service-list" && page.category ? (
-                    <ServiceListPage category={page.category} />
-                  ) : null}
-                </PageWrapper>
-              );
-            })}
+            {renderedPages}
           </HTMLFlipBook>
 
           {/* Lớp overlay vô hình chặn click vào khoảng trống bên trái trang bìa */}

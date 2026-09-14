@@ -5,6 +5,7 @@ interface PageWrapperProps {
   number?: number;
   isCover?: boolean;
   hideNumber?: boolean;
+  density?: "hard" | "soft";
 }
 
 /**
@@ -14,13 +15,13 @@ interface PageWrapperProps {
 export const PageWrapper = forwardRef<
   HTMLDivElement,
   PropsWithChildren<PageWrapperProps>
->(({ children, number, isCover, hideNumber }, ref) => {
+>(({ children, number, isCover, hideNumber, density }, ref) => {
   return (
     <div
       ref={ref}
       className={`bg-zen-cream shadow-page h-full w-full relative overflow-hidden rounded-[5px] border border-zen-brown/15`}
-      // Cover thì dùng bìa cứng (hard)
-      data-density={isCover ? "hard" : "soft"}
+      // Mặc định cover dùng bìa cứng (hard), trừ khi được chỉ định rõ qua prop density (ví dụ: soft ở mobile portrait)
+      data-density={density ?? (isCover ? "hard" : "soft")}
     >
       {children}
 

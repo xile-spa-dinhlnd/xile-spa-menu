@@ -14,6 +14,7 @@ declare module 'react-pageflip' {
     showCover?: boolean;
     mobileScrollSupport?: boolean;
     usePortrait?: boolean;
+    renderOnlyPageLengthChange?: boolean;
     startZIndex?: number;
     autoSize?: boolean;
     flippingTime?: number;
