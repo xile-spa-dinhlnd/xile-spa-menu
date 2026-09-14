@@ -106,6 +106,242 @@ body {
 .ripple-ring:nth-child(3) { animation-delay: 1.5s; }
 .ripple-ring:nth-child(4) { animation-delay: 2.25s; }
 
+/* === Vòng sóng nước Elip theo phối cảnh 3D mặt nước (Living Water Ripple) === */
+@keyframes water-ripple-ellipse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.08, 0.04);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.85;
+    border-color: rgba(255, 235, 175, 0.75);
+    box-shadow: 0 0 10px rgba(255, 220, 140, 0.5);
+  }
+  60% {
+    opacity: 0.45;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(3.2, 1.6);
+    opacity: 0;
+  }
+}
+
+.living-ripple {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px solid rgba(240, 205, 135, 0.6);
+  animation: water-ripple-ellipse 3.6s cubic-bezier(0.1, 0.4, 0.4, 1) infinite;
+  pointer-events: none;
+  opacity: 0;
+}
+.living-ripple:nth-child(1) { animation-delay: 0s; }
+.living-ripple:nth-child(2) { animation-delay: 0.9s; }
+.living-ripple:nth-child(3) { animation-delay: 1.8s; }
+.living-ripple:nth-child(4) { animation-delay: 2.7s; }
+
+/* Giọt nước rơi tí tách vào tâm sóng */
+@keyframes droplet-drop {
+  0% {
+    transform: translate(-50%, -80px) scale(0.8);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.9;
+  }
+  75% {
+    transform: translate(-50%, 0) scale(1.1);
+    opacity: 0.9;
+  }
+  85%, 100% {
+    transform: translate(-50%, 0) scale(1.5, 0.3);
+    opacity: 0;
+  }
+}
+
+.droplet-anim {
+  animation: droplet-drop 3.6s cubic-bezier(0.4, 0, 0.8, 1) infinite;
+}
+
+/* Sóng nước phản hồi khi chạm tay / click (Touch Ripple) */
+@keyframes touch-ripple {
+  0% {
+    transform: translate(-50%, -50%) scale(0.1, 0.05);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.8, 1.4);
+    opacity: 0;
+  }
+}
+
+.touch-ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 245, 200, 0.85);
+  box-shadow: 0 0 12px rgba(255, 225, 140, 0.6);
+  animation: touch-ripple 1s ease-out forwards;
+  pointer-events: none;
+}
+
+/* === Lá liễu rơi chầm chậm theo phong cách Thiền Zen (5 Chiếc Lá Rơi Liên Tục) === */
+@keyframes zen-leaf-1 {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(0.9);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  35% {
+    transform: translate(45px, 80px) rotate(35deg) scale(1);
+    opacity: 0.95;
+  }
+  65% {
+    transform: translate(90px, 160px) rotate(-15deg) scale(0.95);
+    opacity: 0.9;
+  }
+  85% {
+    opacity: 0.75;
+  }
+  100% {
+    transform: translate(140px, 240px) rotate(45deg) scale(0.85);
+    opacity: 0;
+  }
+}
+
+@keyframes zen-leaf-2 {
+  0% {
+    transform: translate(0, 0) rotate(-20deg) scale(0.85);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  40% {
+    transform: translate(-30px, 90px) rotate(25deg) scale(1);
+    opacity: 0.95;
+  }
+  70% {
+    transform: translate(25px, 190px) rotate(-35deg) scale(0.9);
+    opacity: 0.85;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(70px, 270px) rotate(20deg) scale(0.8);
+    opacity: 0;
+  }
+}
+
+@keyframes zen-leaf-3 {
+  0% {
+    transform: translate(0, 0) rotate(10deg) scale(0.95);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.95;
+  }
+  30% {
+    transform: translate(35px, 70px) rotate(-25deg) scale(1.05);
+    opacity: 0.9;
+  }
+  60% {
+    transform: translate(10px, 150px) rotate(40deg) scale(0.95);
+    opacity: 0.85;
+  }
+  85% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(50px, 230px) rotate(-10deg) scale(0.85);
+    opacity: 0;
+  }
+}
+
+@keyframes zen-leaf-4 {
+  0% {
+    transform: translate(0, 0) rotate(30deg) scale(0.8);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  45% {
+    transform: translate(60px, 100px) rotate(-20deg) scale(0.95);
+    opacity: 0.95;
+  }
+  75% {
+    transform: translate(110px, 180px) rotate(50deg) scale(0.9);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(160px, 260px) rotate(15deg) scale(0.75);
+    opacity: 0;
+  }
+}
+
+@keyframes zen-leaf-5 {
+  0% {
+    transform: translate(0, 0) rotate(-15deg) scale(1);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.95;
+  }
+  35% {
+    transform: translate(-25px, 75px) rotate(30deg) scale(1.05);
+    opacity: 0.9;
+  }
+  65% {
+    transform: translate(40px, 170px) rotate(-40deg) scale(0.95);
+    opacity: 0.85;
+  }
+  90% {
+    opacity: 0.65;
+  }
+  100% {
+    transform: translate(90px, 250px) rotate(25deg) scale(0.85);
+    opacity: 0;
+  }
+}
+
+.leaf-fall-1 {
+  animation: zen-leaf-1 7.5s ease-in-out infinite;
+}
+
+.leaf-fall-2 {
+  animation: zen-leaf-2 9s ease-in-out infinite 1.8s;
+}
+
+.leaf-fall-3 {
+  animation: zen-leaf-3 8.2s ease-in-out infinite 3.5s;
+}
+
+.leaf-fall-4 {
+  animation: zen-leaf-4 8.8s ease-in-out infinite 5.2s;
+}
+
+.leaf-fall-5 {
+  animation: zen-leaf-5 9.5s ease-in-out infinite 7.0s;
+}
+
+/* === Luồng sáng nắng ấm thở nhẹ qua ô cửa sổ (Sunbeam Pulse) === */
+@keyframes sunbeam-pulse {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(1.08);
+  }
+}
+
+.sunbeam-glow {
+  animation: sunbeam-pulse 6s ease-in-out infinite;
+}
+
 /* === Leaf sway animation === */
 @keyframes leaf-sway {
   0%, 100% { transform: rotate(-3deg) translateY(0px); }

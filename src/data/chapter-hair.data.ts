@@ -1,4 +1,5 @@
 import type { BookPage } from '../types/menu.types';
+import categoryHairCover from '@/assets/images/category-hair-cover.webp';
 import serviceHair69k from '@/assets/images/service-hair-69k.webp';
 import serviceHair179k from '@/assets/images/service-hair-179k.webp';
 import serviceHair289k from '@/assets/images/service-hair-289k.webp';
@@ -9,6 +10,7 @@ export const hairChapterPages: BookPage[] = [
     id: 'page-3-hair-category',
     type: 'category-cover',
     side: 'right',
+    imageUrl: categoryHairCover,
     category: {
       id: 'cat-hair',
       chapter: 1,

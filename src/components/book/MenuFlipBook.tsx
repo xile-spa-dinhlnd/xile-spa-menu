@@ -124,16 +124,7 @@ export const MenuFlipBook: React.FC = () => {
                 );
               }
 
-              // Trang Bìa Chương 1 Gội Đầu (Trang 3)
-              if (page.id === "page-3-hair-category" && page.category) {
-                return (
-                  <PageWrapper key={page.id} number={index + 1} hideNumber={true}>
-                    <CategoryCoverPage category={page.category} />
-                  </PageWrapper>
-                );
-              }
-
-              // Các trang hình ảnh chất lượng cao chuẩn theo tờ rơi Canva gốc (Trang 4 - 19)
+              // Các trang hình ảnh chất lượng cao chuẩn theo tờ rơi Canva gốc (Trang 3 - 19)
               if (page.imageUrl) {
                 const altText =
                   page.title ||

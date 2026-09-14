@@ -3,27 +3,46 @@ import logoImage from "@/assets/xile_spa_logo.png";
 
 export const BackCoverPage: React.FC = () => {
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center p-8 relative overflow-hidden text-zen-charcoal bg-paper-inner">
-      {/* Vignette viền */}
+    <div className="w-full h-full flex flex-col items-center justify-center p-8 relative overflow-hidden text-zen-charcoal bg-paper-inner select-none">
+      {/* Vignette viền ấm áp */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse at center, transparent 60%, rgba(100,60,10,0.1) 100%)",
+            "radial-gradient(ellipse at center, transparent 55%, rgba(100,60,10,0.15) 100%)",
         }}
       />
 
-      <div className="relative z-10 flex flex-col items-center">
+      {/* Rãnh gáy sách (Spine Crease) - Nằm bên PHẢI vì bìa sau ở nửa trái của cuốn sách */}
+      <div
+        className="absolute top-0 bottom-0 right-0 w-8 md:w-12 pointer-events-none z-20"
+        style={{
+          background:
+            "linear-gradient(to left, rgba(0,0,0,0.22) 0%, rgba(0,0,0,0.06) 45%, transparent 100%)",
+        }}
+      />
+
+      {/* Bóng viền mặt ngoài (Outer Edge Shadow - Trái) */}
+      <div
+        className="absolute top-0 bottom-0 left-0 w-3 pointer-events-none z-20"
+        style={{
+          background:
+            "linear-gradient(to right, rgba(0,0,0,0.1) 0%, transparent 100%)",
+        }}
+      />
+
+      {/* Logo Xile Spa nổi bật, sang trọng ở trung tâm */}
+      <div className="relative z-10 flex flex-col items-center justify-center w-full h-full">
         <img
           src={logoImage}
           alt="Xile Spa Logo"
-          className="w-48 md:w-64 h-auto opacity-90 drop-shadow-sm mix-blend-multiply"
+          className="w-64 sm:w-80 md:w-96 lg:w-[380px] max-w-[72%] max-h-[70%] object-contain opacity-95 drop-shadow-md mix-blend-multiply transition-all duration-300"
         />
-        <div className="flex flex-col items-center gap-2 mt-4">
-          <p className="font-script text-4xl text-zen-brown opacity-90 drop-shadow-sm">
-            Hẹn gặp lại
-          </p>
-        </div>
+      </div>
+
+      {/* Screen reader & SEO */}
+      <div className="sr-only">
+        <h2>Xile Beauty & Spa</h2>
       </div>
     </div>
   );
