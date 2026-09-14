@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 // @ts-ignore - react-pageflip không có types chính thức hoàn chỉnh
 import HTMLFlipBook from "react-pageflip";
 import { useBookDimensions } from "../../hooks/useBookDimensions";
@@ -6,6 +6,7 @@ import { useFlipBook } from "../../hooks/useFlipBook";
 import { FlipBookDock } from "../dock";
 import { PageWrapper } from "./PageWrapper";
 import { BookHint } from "./BookHint";
+import { OrientationNotice } from "./OrientationNotice";
 import {
   CoverPage,
   IntroPage,
@@ -18,7 +19,8 @@ import {
 import { menuData } from "../../data";
 
 export const MenuFlipBook: React.FC = () => {
-  const { width, height, usePortrait, showCover } = useBookDimensions();
+  const { width, height, usePortrait, showCover, isPortraitOrientation, coverShift } =
+    useBookDimensions();
   const {
     bookRef,
     currentPage,
@@ -37,8 +39,36 @@ export const MenuFlipBook: React.FC = () => {
     onBookPointerDown,
   } = useFlipBook(usePortrait);
 
+  // Dọn dẹp an toàn instance của PageFlip khi unmount hoặc khi thay đổi kích thước/chế độ
+  // để loại bỏ zombie event listener trên window (tránh lỗi "Invalid width or height")
+  useEffect(() => {
+    const currentRef = bookRef.current;
+    return () => {
+      try {
+        const api = currentRef?.pageFlip?.();
+        if (api && typeof (api as unknown as { destroy?: () => void }).destroy === "function") {
+          (api as unknown as { destroy: () => void }).destroy();
+        }
+      } catch {
+        // Bỏ qua nếu đã được dọn dẹp trước đó
+      }
+    };
+  }, [width, height, usePortrait, bookRef]);
+
+  // Tính toán khoảng trượt căn giữa an toàn (luôn kẹp trong lề an toàn để không bị tràn màn hình)
+  const containerTransform = usePortrait
+    ? "translateX(0)"
+    : isCoverCentered
+    ? `translateX(-${coverShift}px)`
+    : isBackCoverCentered
+    ? `translateX(${coverShift}px)`
+    : "translateX(0)";
+
   return (
     <>
+      {/* Thông báo gợi ý xoay ngang màn hình khi ở hướng dọc */}
+      <OrientationNotice show={isPortraitOrientation} />
+
       {/* UX Hint khi ở trang bìa */}
       <BookHint show={currentPage === 0 && !isFlipping} />
 
@@ -56,38 +86,33 @@ export const MenuFlipBook: React.FC = () => {
       />
 
       <div
-        className="flex justify-center items-center w-full h-full p-4 transition-transform duration-700 ease-out relative"
-        style={{
-          transform: usePortrait
-            ? "translateX(0)"
-            : isCoverCentered
-            ? `translateX(-${width / 2}px)`
-            : isBackCoverCentered
-            ? `translateX(${width / 2}px)`
-            : "translateX(0)",
-        }}
+        className={`flex justify-center items-center w-full flex-1 relative overflow-visible px-2 transition-all duration-300 ${
+          usePortrait ? "pt-8 pb-16" : "pt-2 pb-14 sm:pb-16"
+        }`}
       >
         <div
-          className="relative"
+          className="relative transition-transform duration-700 ease-out"
           style={{
             width: usePortrait ? width : width * 2,
             height,
+            transform: containerTransform,
             filter:
               "drop-shadow(0 25px 50px rgba(0,0,0,0.65)) drop-shadow(0 8px 20px rgba(0,0,0,0.45)) drop-shadow(0 2px 5px rgba(0,0,0,0.3))",
           }}
           onPointerDown={onBookPointerDown}
         >
           <HTMLFlipBook
+            key={`${usePortrait ? "portrait" : "landscape"}-${width}x${height}`}
             ref={bookRef}
             onFlip={onPageChange}
             onChangeState={onChangeState}
             width={width}
             height={height}
             size="fixed"
-            minWidth={315}
-            maxWidth={1000}
-            minHeight={400}
-            maxHeight={1533}
+            minWidth={100}
+            maxWidth={1600}
+            minHeight={80}
+            maxHeight={1600}
             maxShadowOpacity={0.35}
             drawShadow={true}
             showCover={showCover}

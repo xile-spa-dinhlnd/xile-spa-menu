@@ -36,7 +36,7 @@ export const BackCoverPage: React.FC = () => {
         <img
           src={logoImage}
           alt="Xile Spa Logo"
-          className="w-64 sm:w-80 md:w-96 lg:w-[380px] max-w-[72%] max-h-[70%] object-contain opacity-95 drop-shadow-md mix-blend-multiply transition-all duration-300"
+          className="w-64 sm:w-80 md:w-96 lg:w-95 max-w-[72%] max-h-[70%] object-contain opacity-95 drop-shadow-md mix-blend-multiply transition-all duration-300"
         />
       </div>
 

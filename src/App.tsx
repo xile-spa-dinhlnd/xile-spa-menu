@@ -4,7 +4,7 @@ import { MenuFlipBook } from './components/book'
 
 function App() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-dvh">
+    <div className="w-full min-h-dvh flex flex-col items-center justify-center relative overflow-hidden">
       {/* Nền chính: gradient tối đa lớp tạo chiều sâu */}
       <div
         className="fixed inset-0 pointer-events-none"
@@ -23,9 +23,9 @@ function App() {
       />
 
       {/* Sách lật Menu */}
-      <div className="relative z-10 w-full h-full flex-1 flex flex-col justify-center">
+      <main className="relative z-10 w-full flex-1 flex flex-col items-center justify-center">
         <MenuFlipBook />
-      </div>
+      </main>
     </div>
   )
 }

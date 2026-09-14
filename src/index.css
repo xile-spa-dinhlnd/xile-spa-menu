@@ -54,7 +54,18 @@
    Book Realism & 3D Effects
    ============================================================ */
 
-/* Đã gỡ bỏ border-radius và overflow: hidden của react-pageflip để hiệu ứng lật mượt mà như ban đầu */
+/* Sửa lỗi CSS typo trong thư viện page-flip (.sft__wrapper -> .stf__wrapper) */
+.stf__wrapper {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.stf__parent {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+}
 
 /* ============================================================
    Base Styles
@@ -348,6 +359,23 @@ body {
   50%       { transform: rotate(3deg) translateY(-6px); }
 }
 .leaf-sway { animation: leaf-sway 5s ease-in-out infinite; }
+
+/* === Icon xoay điện thoại sang ngang (Orientation Notice) === */
+@keyframes rotate-device {
+  0%, 15% {
+    transform: rotate(0deg);
+  }
+  45%, 75% {
+    transform: rotate(-90deg);
+  }
+  95%, 100% {
+    transform: rotate(0deg);
+  }
+}
+.animate-rotate-device {
+  animation: rotate-device 3.2s ease-in-out infinite;
+  transform-origin: center center;
+}
 
 /* Nối hữ trang trí kỹ thuật: ẩn scrollbar bên trong trang */
 .no-scrollbar::-webkit-scrollbar { display: none; }
