@@ -207,16 +207,6 @@ export const MenuFlipBook: React.FC = () => {
           }}
           onPointerDown={onBookPointerDown}
         >
-          {/* Lớp bóng đổ chiều sâu tăng tốc phần cứng (GPU-accelerated ambient shadow) */}
-          <div
-            className="absolute inset-0 pointer-events-none rounded-md"
-            style={{
-              boxShadow:
-                "0 25px 50px -12px rgba(0,0,0,0.7), 0 12px 24px -8px rgba(0,0,0,0.5), 0 4px 10px rgba(0,0,0,0.35)",
-              transform: "translateZ(0)",
-            }}
-          />
-
           <HTMLFlipBook
             key={`${usePortrait ? "portrait" : "landscape"}-${width}x${height}`}
             ref={bookRef}
