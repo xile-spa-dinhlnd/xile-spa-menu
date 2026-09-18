@@ -22,6 +22,7 @@ export interface UseFlipBookReturn {
   progressPercent: number;
   totalPages: number;
   onPageChange: (e: { data: number }) => void;
+  onInit: (e: { data: { page: number; mode: string } }) => void;
   onChangeState: (e: { data: string }) => void;
   nextButtonClick: () => void;
   prevButtonClick: () => void;
@@ -43,6 +44,14 @@ export function useFlipBook(usePortrait: boolean): UseFlipBookReturn {
   const isCoverCentered = currentPage === 0 && !usePortrait && !isDraggingCover;
   const isBackCoverCentered =
     currentPage >= menuData.length - 1 && !usePortrait && !isDraggingCover;
+
+  // Đồng bộ vị trí trang ngay khi sách khởi tạo hoặc sau khi đổi giao diện (xoay màn hình)
+  const onInit = useCallback((e: { data: { page: number; mode: string } }) => {
+    const page = e?.data?.page ?? 0;
+    targetPageRef.current = page;
+    currentPageRef.current = page;
+    setCurrentPage(page);
+  }, []);
 
   // Xử lý sự kiện khi TRANG ĐÃ LẬT XONG
   const onPageChange = useCallback((e: { data: number }) => {
@@ -259,6 +268,7 @@ export function useFlipBook(usePortrait: boolean): UseFlipBookReturn {
     progressPercent,
     totalPages,
     onPageChange,
+    onInit,
     onChangeState,
     nextButtonClick,
     prevButtonClick,

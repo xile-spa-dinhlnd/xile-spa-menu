@@ -38,6 +38,7 @@ export const MenuFlipBook: React.FC = () => {
     progressPercent,
     totalPages,
     onPageChange,
+    onInit,
     onChangeState,
     nextButtonClick,
     prevButtonClick,
@@ -210,6 +211,8 @@ export const MenuFlipBook: React.FC = () => {
           <HTMLFlipBook
             key={`${usePortrait ? "portrait" : "landscape"}-${width}x${height}`}
             ref={bookRef}
+            startPage={currentPage}
+            onInit={onInit}
             onFlip={onPageChange}
             onChangeState={onChangeState}
             width={width}
@@ -219,8 +222,8 @@ export const MenuFlipBook: React.FC = () => {
             maxWidth={1600}
             minHeight={80}
             maxHeight={1600}
-            maxShadowOpacity={0.35}
-            drawShadow={true}
+            maxShadowOpacity={usePortrait ? 0 : 0.35}
+            drawShadow={!usePortrait}
             showCover={showCover}
             mobileScrollSupport={true}
             usePortrait={usePortrait}

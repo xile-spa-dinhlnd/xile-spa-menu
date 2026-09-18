@@ -19,7 +19,7 @@ export const PageWrapper = forwardRef<
   return (
     <div
       ref={ref}
-      className={`bg-zen-cream shadow-page h-full w-full relative overflow-hidden rounded-[5px] border border-zen-brown/15`}
+      className={`bg-zen-cream h-full w-full relative overflow-hidden rounded-[5px] border border-zen-brown/15`}
       // Mặc định cover dùng bìa cứng (hard), trừ khi được chỉ định rõ qua prop density (ví dụ: soft ở mobile portrait)
       data-density={density ?? (isCover ? "hard" : "soft")}
     >

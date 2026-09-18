@@ -20,6 +20,8 @@ declare module 'react-pageflip' {
     flippingTime?: number;
     className?: string;
     style?: React.CSSProperties;
+    startPage?: number;
+    onInit?: (e: { data: { page: number; mode: string } }) => void;
     onFlip?: (e: { data: number }) => void;
     onChangeState?: (e: { data: string }) => void;
     children?: React.ReactNode;
